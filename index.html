@@ -102,16 +102,22 @@
   .item-check.selected { background: var(--accent); border-color: var(--accent); color: #fff; }
   .item-check.comprado { background: var(--accent2); border-color: var(--accent2); color: #fff; }
 
-  /* ── BOTONES DE ACCIÓN (EDITAR / STOCK) ── */
+  /* ── BOTONES DE ACCIÓN ── */
   .stock-controls { display: flex; align-items: center; gap: 6px; background: var(--bg); padding: 3px 8px; border-radius: 10px; }
   .stock-btn { background: none; border: none; font-size: 1.15rem; font-weight: 700; cursor: pointer; color: var(--accent); width: 24px; height: 24px; display: flex; align-items: center; justify-content: center; border-radius: 6px; }
   .stock-val { font-weight: 700; font-size: 0.9rem; min-width: 22px; text-align: center; }
   
-  .btn-icon-small { background: none; border: none; color: #aaa; cursor: pointer; font-size: 1rem; padding: 6px; transition: color 0.2s; border-radius: 8px;}
+  .btn-icon-small { background: none; border: none; color: #aaa; cursor: pointer; font-size: 1.1rem; padding: 6px; transition: color 0.2s; border-radius: 8px;}
   .btn-icon-small:hover { color: var(--accent); background: rgba(0,0,0,0.05);}
+  .btn-icon-small.del:hover { color: #e63946; }
   
   .add-btn-large { width: 100%; background: rgba(232,93,38,0.1); border: 1.5px dashed var(--accent); color: var(--accent); padding: 12px; border-radius: 12px; font-family: 'Syne', sans-serif; font-weight: 700; cursor: pointer; margin-top: 10px; transition: background 0.2s;}
   .add-btn-large:hover { background: rgba(232,93,38,0.15); }
+
+  .add-row { display: flex; gap: 8px; margin-top: 10px; }
+  .add-input { flex: 1; padding: 8px 12px; border: 1.5px solid var(--border); border-radius: 10px; font-family: 'DM Sans', sans-serif; font-size: 0.88rem; outline: none; background: var(--bg); }
+  .add-input:focus { border-color: var(--accent); }
+  .add-btn { background: var(--accent); color: #fff; border: none; border-radius: 10px; padding: 8px 14px; font-family: 'Syne', sans-serif; font-weight: 700; font-size: 0.85rem; cursor: pointer; }
 
   /* ── MODALS ── */
   .modal-overlay { position: fixed; inset: 0; background: rgba(26,26,26,0.7); backdrop-filter: blur(2px); display: flex; align-items: flex-end; justify-content: center; opacity: 0; pointer-events: none; transition: opacity 0.3s; z-index: 200; }
@@ -120,7 +126,7 @@
   .modal-overlay.open .modal { transform: translateY(0); }
   .modal-icon-top { font-size: 3rem; position: absolute; top: -25px; left: 50%; transform: translateX(-50%); background: var(--card); border-radius: 50%; padding: 5px; box-shadow: 0 4px 10px rgba(0,0,0,0.1); }
   .modal h2 { margin-top: 10px; margin-bottom: 8px; font-family: 'Syne', sans-serif; font-size: 1.3rem; text-align: center; }
-  .modal p { color: var(--muted); margin-bottom: 22px; font-size: 0.95rem; line-height: 1.5; text-align: center; }
+  .modal p { color: var(--muted); margin-bottom: 22px; font-size: 0.95rem; line-height: 1.5; text-align: center; white-space: pre-line; }
   .modal-actions { display: flex; gap: 12px; }
   
   .modal-input, .modal-select { width: 100%; padding: 15px; font-size: 1.1rem; font-family: 'DM Sans'; border: 2px solid var(--border); border-radius: 14px; margin-bottom: 16px; outline: none; background: var(--bg); color: var(--ink);}
@@ -188,13 +194,16 @@
     <input type="text" id="me-nueva-cat" class="modal-input" placeholder="Nombre de la nueva categoría..." style="display:none; margin-top: -8px;">
     
     <div class="modal-actions">
+      <!-- Botón de Borrar (se muestra solo al editar) -->
+      <button class="btn danger" style="flex: 0.25; display:none;" id="btn-delete-edit" onclick="pedirEliminarDesdeEdicion()" title="Borrar Producto">🗑️</button>
+      
       <button class="btn secondary" onclick="closeModals()">Cancelar</button>
       <button class="btn confirm" onclick="guardarEdicionProducto()">Guardar</button>
     </div>
   </div>
 </div>
 
-<!-- OTROS MODALES... (Cantidad, Trackeo, Alerta) -->
+<!-- MODAL: CANTIDAD (ALMACÉN) -->
 <div class="modal-overlay" id="modal-qty">
   <div class="modal">
     <div class="modal-icon-top">📦</div>
@@ -208,6 +217,7 @@
   </div>
 </div>
 
+<!-- MODAL: PREGUNTAR TRACKEO -->
 <div class="modal-overlay" id="modal-ask">
   <div class="modal">
     <div class="modal-icon-top">🤔</div>
@@ -220,14 +230,15 @@
   </div>
 </div>
 
+<!-- MODAL: ALERTA DE CONFIRMACIÓN / AVISO (Para duplicados o borrado) -->
 <div class="modal-overlay" id="modal-alert">
   <div class="modal">
     <div class="modal-icon-top" id="alert-icon">⚠️</div>
     <h2 id="alert-title">Atención</h2>
     <p id="alert-desc">¿Estás seguro?</p>
     <div class="modal-actions">
-      <button class="btn secondary" onclick="closeModals()">Cancelar</button>
-      <button class="btn danger" id="alert-confirm-btn" onclick="">Confirmar</button>
+      <button class="btn secondary" id="alert-cancel-btn" onclick="closeModals()">Cancelar</button>
+      <button class="btn confirm" id="alert-confirm-btn" onclick="">Confirmar</button>
     </div>
   </div>
 </div>
@@ -251,7 +262,6 @@
   const db = getFirestore(app);
   const productosCol = collection(db, "productos");
 
-  // SECTORES BASE ACTUALIZADOS
   const SECTORES_BASE = [
     { id: 'almacen', emoji: '🫙', name: 'Almacén / Despensa' },
     { id: 'limpieza', emoji: '🧹', name: 'Artículos de Limpieza' },
@@ -264,7 +274,7 @@
     { id: 'extras', emoji: '🐾', name: 'Mascotas / Extras' }
   ];
 
-  window.vistaAlmacen = 'categorias'; // 'categorias' o 'alfabetica'
+  window.vistaAlmacen = 'categorias'; 
   window.almSearchTerm = '';
   
   let openSectors = { almacen: true, sin_stock: true };
@@ -285,7 +295,6 @@
   });
 
   function extraerCategoriasDinamicas() {
-    // Une los sectores base con cualquier categoría nueva creada por los usuarios
     let map = new Map();
     SECTORES_BASE.forEach(s => map.set(s.id, s));
     productos.forEach(p => {
@@ -325,16 +334,14 @@
   function render() {
     const contenedor = document.getElementById('app-content');
     contenedor.innerHTML = '';
-
     if (currentMode === 'almacen') renderAlmacen(contenedor);
     if (currentMode === 'armar') renderArmar(contenedor);
     if (currentMode === 'comprar') renderComprar(contenedor);
-
     updateProgress();
   }
 
   // ==========================================
-  // VISTA 1: ALMACÉN (Stock y Búsqueda)
+  // VISTAS
   // ==========================================
   function renderAlmacen(container) {
     let itemsAlm = productos.filter(p => p.en_almacen);
@@ -342,23 +349,18 @@
       itemsAlm = itemsAlm.filter(p => p.nombre.toLowerCase().includes(window.almSearchTerm.toLowerCase()));
     }
 
-    // Separar Sin Stock
     const sinStock = itemsAlm.filter(p => !p.stock || p.stock <= 0).sort((a,b) => a.nombre.localeCompare(b.nombre));
     const conStock = itemsAlm.filter(p => p.stock > 0).sort((a,b) => a.nombre.localeCompare(b.nombre));
 
-    // Botón Agregar Global
     container.innerHTML += `<button class="add-btn-large" onclick="window.abrirModalEdicion(null, true)">+ Añadir Producto al Almacén</button><br><br>`;
 
-    // Renderizar Sector SIN STOCK (Si hay)
     if (sinStock.length > 0) {
       const isOpen = openSectors['sin_stock'] ?? true;
       const html = `
         <div class="sector ${isOpen ? 'open' : ''}" style="border-color: #e63946;">
           <div class="sector-header" onclick="window.toggleSector('sin_stock')">
-            <div class="sector-emoji">🚨</div>
-            <div class="sector-title" style="color:#e63946;">Sin Stock</div>
-            <div class="sector-count danger">${sinStock.length} items</div>
-            <div class="sector-chevron">▼</div>
+            <div class="sector-emoji">🚨</div><div class="sector-title" style="color:#e63946;">Sin Stock</div>
+            <div class="sector-count danger">${sinStock.length} items</div><div class="sector-chevron">▼</div>
           </div>
           <div class="sector-body">
             <ul class="item-list">
@@ -385,7 +387,6 @@
       return;
     }
 
-    // Renderizar CON STOCK
     if (window.vistaAlmacen === 'alfabetica') {
       const html = `
         <div class="sector open">
@@ -409,7 +410,6 @@
       `;
       container.innerHTML += html;
     } else {
-      // Vista Categorías
       categoriasDinamicas.forEach(sec => {
         const items = conStock.filter(p => (p.categoriaId || 'extras') === sec.id);
         if (items.length === 0) return;
@@ -417,10 +417,8 @@
         const html = `
           <div class="sector ${isOpen ? 'open' : ''}">
             <div class="sector-header" onclick="window.toggleSector('${sec.id}')">
-              <div class="sector-emoji">${sec.emoji}</div>
-              <div class="sector-title">${sec.name}</div>
-              <div class="sector-count">${items.length}</div>
-              <div class="sector-chevron">▼</div>
+              <div class="sector-emoji">${sec.emoji}</div><div class="sector-title">${sec.name}</div>
+              <div class="sector-count">${items.length}</div><div class="sector-chevron">▼</div>
             </div>
             <div class="sector-body">
               <ul class="item-list">
@@ -444,9 +442,6 @@
     }
   }
 
-  // ==========================================
-  // VISTA 2: ARMAR LISTA
-  // ==========================================
   function renderArmar(container) {
     container.innerHTML += `<button class="add-btn-large" onclick="window.abrirModalEdicion(null, false)">+ Crear Producto Nuevo</button><br><br>`;
     
@@ -459,8 +454,7 @@
       const html = `
         <div class="sector ${isOpen ? 'open' : ''}">
           <div class="sector-header" onclick="window.toggleSector('${sec.id}')">
-            <div class="sector-emoji">${sec.emoji}</div>
-            <div class="sector-title">${sec.name}</div>
+            <div class="sector-emoji">${sec.emoji}</div><div class="sector-title">${sec.name}</div>
             <div class="sector-count ${seleccionados > 0 ? 'has-items' : ''}">${seleccionados}/${items.length}</div>
             <div class="sector-chevron">▼</div>
           </div>
@@ -471,13 +465,18 @@
                 return `
                 <li class="item ${isSel ? 'selected-mode-armar' : ''}">
                   <div class="item-check ${isSel ? 'selected' : ''}" onclick="window.toggleLista('${item.id}', ${isSel})">${isSel ? '+' : ''}</div>
-                  <span class="item-name" onclick="window.toggleLista('${item.id}',${isSel})" style="cursor:pointer;">
-                    ${item.nombre}${item.en_almacen ? `<span class="item-meta">(Stock: ${item.stock || 0})</span>` : ''}
+                  <span class="item-name" onclick="window.toggleLista('${item.id}', ${isSel})" style="cursor:pointer;">
+                    ${item.nombre} ${item.en_almacen ? `<span class="item-meta">(Stock: ${item.stock || 0})</span>` : ''}
                   </span>
+                  <button class="btn-icon-small del" onclick="window.pedirEliminarProducto('${item.id}', \`${item.nombre.replace(/`/g, "")}\`)" title="Borrar de la base">✕</button>
                   <button class="btn-icon-small" onclick="window.abrirModalEdicion('${item.id}')">✏️</button>
                 </li>
               `}).join('')}
             </ul>
+            <div class="add-row">
+              <input class="add-input" id="input-${sec.id}" placeholder="Agregar rápido a ${sec.name}..." onkeydown="if(event.key==='Enter') window.agregarNuevoProductoRapido('${sec.id}')">
+              <button class="add-btn" onclick="window.agregarNuevoProductoRapido('${sec.id}')">+</button>
+            </div>
           </div>
         </div>
       `;
@@ -485,9 +484,6 @@
     });
   }
 
-  // ==========================================
-  // VISTA 3: DE COMPRAS
-  // ==========================================
   function renderComprar(container) {
     let hayItems = false;
     categoriasDinamicas.forEach(sec => {
@@ -500,8 +496,7 @@
       const html = `
         <div class="sector ${isOpen ? 'open' : ''}">
           <div class="sector-header" onclick="window.toggleSector('${sec.id}')">
-            <div class="sector-emoji">${sec.emoji}</div>
-            <div class="sector-title">${sec.name}</div>
+            <div class="sector-emoji">${sec.emoji}</div><div class="sector-title">${sec.name}</div>
             <div class="sector-count ${comprados === items.length ? 'all-done' : ''}">${comprados}/${items.length}</div>
             <div class="sector-chevron">▼</div>
           </div>
@@ -548,17 +543,46 @@
   }
 
   // ==========================================
-  // GESTIÓN DE PRODUCTOS (MODAL EDICIÓN)
+  // GESTIÓN Y VALIDACIÓN DE DUPLICADOS
   // ==========================================
+
+  // Agregar rápido desde el input de abajo de cada categoría
+  window.agregarNuevoProductoRapido = async (catId) => {
+    const inp = document.getElementById(`input-${catId}`);
+    const nombre = inp.value.trim();
+    if (!nombre) return;
+
+    // VALIDAR DUPLICADOS
+    const nombreStr = nombre.toLowerCase();
+    const duplicado = productos.find(p => p.nombre.toLowerCase() === nombreStr);
+    
+    if (duplicado) {
+      mostrarAlertaInformativa('⚠️', 'Producto Existente', `Ya tenés un producto llamado "${duplicado.nombre}" en la base de datos.\nBuscá el que ya tenés y tildalo en vez de crear uno nuevo.`);
+      return;
+    }
+
+    const sec = categoriasDinamicas.find(s => s.id === catId);
+    await addDoc(productosCol, {
+      nombre, categoriaId: catId, categoriaNombre: sec.name, emoji: sec.emoji,
+      en_almacen: ['almacen', 'limpieza', 'higiene', 'bano'].includes(catId),
+      stock: 0, en_lista: true, comprado: false
+    });
+    inp.value = '';
+    showToast(`"${nombre}" agregado`, '✨');
+  };
+
   window.abrirModalEdicion = (id = null, forzarAlmacen = false) => {
     document.getElementById('me-id').value = id || (forzarAlmacen ? 'NEW_ALM' : 'NEW_LISTA');
     document.getElementById('me-title').innerText = id ? 'Editar Producto' : 'Nuevo Producto';
     
-    // Cargar options del select
+    // Mostrar u ocultar el botón de borrar dependiendo de si es nuevo o no
+    const btnDel = document.getElementById('btn-delete-edit');
+    if(id) btnDel.style.display = 'block';
+    else btnDel.style.display = 'none';
+
     const select = document.getElementById('me-categoria');
     select.innerHTML = categoriasDinamicas.map(c => `<option value="${c.id}">${c.emoji} ${c.name}</option>`).join('');
     select.innerHTML += `<option value="NEW_CAT">➕ Crear nueva categoría...</option>`;
-    
     document.getElementById('me-nueva-cat').style.display = 'none';
 
     if (id) {
@@ -567,7 +591,7 @@
       select.value = p.categoriaId || 'extras';
     } else {
       document.getElementById('me-nombre').value = '';
-      select.value = 'almacen'; // default
+      select.value = 'almacen'; 
     }
     document.getElementById('modal-edit').classList.add('open');
   };
@@ -581,6 +605,16 @@
     const id = document.getElementById('me-id').value;
     const nombre = document.getElementById('me-nombre').value.trim();
     if(!nombre) return showToast("Escribí un nombre", '⚠️');
+
+    // VALIDAR DUPLICADOS
+    const nombreStr = nombre.toLowerCase();
+    const esNuevo = (id === 'NEW_ALM' || id === 'NEW_LISTA');
+    const duplicado = productos.find(p => p.nombre.toLowerCase() === nombreStr && (esNuevo || p.id !== id));
+    
+    if (duplicado) {
+      mostrarAlertaInformativa('⚠️', 'Producto Duplicado', `Ya existe un producto llamado "${duplicado.nombre}".\nPodés buscarlo y usar ese en lugar de crear uno duplicado.`);
+      return; 
+    }
 
     let catId = document.getElementById('me-categoria').value;
     let catName = "", emoji = "📦";
@@ -596,26 +630,20 @@
 
     const data = { nombre, categoriaId: catId, categoriaNombre: catName, emoji };
 
-    if (id && id !== 'NEW_ALM' && id !== 'NEW_LISTA') {
-      // Editar
+    if (!esNuevo) {
       await updateDoc(doc(db, "productos", id), data);
       showToast("Producto actualizado", '📝');
     } else {
-      // Crear Nuevo
-      data.stock = 0;
-      data.comprado = false;
-      if (id === 'NEW_ALM') {
-        data.en_almacen = true; data.en_lista = false;
-      } else {
-        data.en_almacen = false; data.en_lista = true;
-      }
+      data.stock = 0; data.comprado = false;
+      if (id === 'NEW_ALM') { data.en_almacen = true; data.en_lista = false; } 
+      else { data.en_almacen = false; data.en_lista = true; }
       await addDoc(productosCol, data);
       showToast("Producto creado", '✨');
     }
     closeModals();
   };
 
-  // OPERACIONES RÁPIDAS Y MODALES
+  // OPERACIONES RÁPIDAS
   window.modificarStock = async (id, delta) => {
     const item = productos.find(p => p.id === id);
     const nuevo = Math.max(0, (item.stock || 0) + delta);
@@ -625,7 +653,23 @@
   window.toggleSector = (id) => { openSectors[id] = !openSectors[id]; render(); };
   window.toggleExpandAll = () => { const t = categoriasDinamicas.every(s => openSectors[s.id]); categoriasDinamicas.forEach(s => openSectors[s.id] = !t); render(); };
   
-  window.quitarDeAlmacen = async (id) => { await updateDoc(doc(db, "productos", id), { en_almacen: false }); showToast("Quitado del almacén", '📦'); };
+  // BORRADO DEFINITIVO
+  window.pedirEliminarProducto = (id, nombre) => {
+    mostrarAlerta('🗑️', 'Eliminar Producto', `Estás por borrar "${nombre}" de toda la base de datos.\n¿Estás seguro?`, 'Sí, eliminar', 'danger', async () => {
+      await deleteDoc(doc(db, "productos", id));
+      showToast("Producto eliminado", '🗑️');
+    });
+  };
+
+  // Botón rojo desde el modal de Edición
+  window.pedirEliminarDesdeEdicion = () => {
+    const id = document.getElementById('me-id').value;
+    const nombre = document.getElementById('me-nombre').value;
+    closeModals();
+    setTimeout(() => {
+      window.pedirEliminarProducto(id, nombre);
+    }, 300); // Pequeño delay para que se cierre el modal de edición primero
+  };
 
   // CHECKOUT (COMPRAS)
   window.handleCheckCompra = async (id) => {
@@ -650,18 +694,41 @@
   };
 
   // ALERTAS GENÉRICAS
-  function mostrarAlerta(icono, titulo, desc, btnText, action) {
+  function mostrarAlerta(icono, titulo, desc, btnText, colorClase, action) {
     document.getElementById('alert-icon').innerText = icono;
     document.getElementById('alert-title').innerText = titulo;
     document.getElementById('alert-desc').innerText = desc;
-    const btn = document.getElementById('alert-confirm-btn');
-    btn.innerText = btnText; btn.onclick = () => { action(); closeModals(); };
+    
+    document.getElementById('alert-cancel-btn').style.display = 'block'; // Mostrar botón cancelar
+    
+    const btnConf = document.getElementById('alert-confirm-btn');
+    btnConf.className = `btn ${colorClase}`; // Le asignamos el color (danger, confirm, etc)
+    btnConf.innerText = btnText; 
+    btnConf.onclick = () => { action(); closeModals(); };
+    
     document.getElementById('modal-alert').classList.add('open');
   }
+
+  // ALERTA INFORMATIVA (Solo botón Entendido)
+  function mostrarAlertaInformativa(icono, titulo, desc) {
+    document.getElementById('alert-icon').innerText = icono;
+    document.getElementById('alert-title').innerText = titulo;
+    document.getElementById('alert-desc').innerText = desc;
+    
+    document.getElementById('alert-cancel-btn').style.display = 'none'; // Ocultar botón cancelar
+    
+    const btnConf = document.getElementById('alert-confirm-btn');
+    btnConf.className = `btn confirm`; 
+    btnConf.innerText = 'Entendido'; 
+    btnConf.onclick = () => { closeModals(); };
+    
+    document.getElementById('modal-alert').classList.add('open');
+  }
+
   window.pedirVaciarCompra = () => {
     const sel = productos.filter(p => p.en_lista);
     if(sel.length===0) return showToast("La lista ya está vacía", '🛒');
-    mostrarAlerta('🛒', '¡Atención!', 'Vas a desmarcar todos los productos de la lista actual.\nEl stock no se modificará.', 'Vaciar Lista', async () => {
+    mostrarAlerta('🛒', '¡Atención!', 'Vas a desmarcar todos los productos de la lista actual.\nEl stock no se modificará.', 'Vaciar Lista', 'danger', async () => {
       const batch = writeBatch(db); sel.forEach(p => batch.update(doc(db, "productos", p.id), { en_lista: false, comprado: false }));
       await batch.commit(); setMode('armar'); showToast("Lista limpia", '🚀');
     });

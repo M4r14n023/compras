@@ -16,7 +16,8 @@
     --accent2: #2d6a4f;
     --accent3: #e9c46a;
     --border: #e0d8cc;
-    --shadow: 0 2px 12px rgba(0,0,0,0.08);
+    --shadow: 0 4px 20px rgba(0,0,0,0.06);
+    --radius: 16px;
   }
 
   * { box-sizing: border-box; margin: 0; padding: 0; }
@@ -26,9 +27,70 @@
     font-family: 'DM Sans', sans-serif;
     color: var(--ink);
     min-height: 100vh;
-    padding-bottom: 110px;
+    padding-bottom: 120px;
   }
 
+  /* ── LOADER (CARRITO Y CAJA) ── */
+  #loader-overlay {
+    position: fixed;
+    inset: 0;
+    background: var(--bg);
+    z-index: 9999;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    transition: opacity 0.6s ease-out, visibility 0.6s ease-out;
+  }
+  #loader-overlay.hidden {
+    opacity: 0;
+    visibility: hidden;
+  }
+  .loader-title {
+    font-family: 'Syne', sans-serif;
+    font-size: 1.5rem;
+    font-weight: 800;
+    color: var(--ink);
+    margin-bottom: 40px;
+    letter-spacing: -0.5px;
+  }
+  .loader-title span { color: var(--accent); }
+  
+  .checkout-lane {
+    width: 220px;
+    height: 4px;
+    background: var(--border);
+    border-radius: 2px;
+    position: relative;
+  }
+  .cart-icon {
+    font-size: 2.5rem;
+    position: absolute;
+    bottom: 2px;
+    left: 0;
+    animation: driveCart 2s infinite ease-in-out;
+  }
+  .cashier-icon {
+    font-size: 3rem;
+    position: absolute;
+    bottom: -4px;
+    right: -40px;
+  }
+  .loader-text {
+    margin-top: 30px;
+    font-size: 0.9rem;
+    color: var(--muted);
+    font-weight: 500;
+  }
+
+  @keyframes driveCart {
+    0% { transform: translateX(-20px); opacity: 0; }
+    15% { opacity: 1; }
+    70% { transform: translateX(150px); opacity: 1; }
+    100% { transform: translateX(180px); opacity: 0; }
+  }
+
+  /* ── HEADER ── */
   header {
     background: var(--ink);
     color: #fff;
@@ -70,13 +132,13 @@
   .btn-header:hover { background: rgba(255,255,255,0.22); }
   .btn-header.danger { background: rgba(232,93,38,0.3); color: #ffb499; }
 
+  /* ── TABS ── */
   .tabs {
     display: flex;
     gap: 8px;
     padding-bottom: 12px;
     overflow-x: auto;
   }
-
   .tab-btn {
     flex: 1;
     min-width: 95px;
@@ -87,7 +149,7 @@
     border-radius: 12px;
     font-family: 'Syne', sans-serif;
     font-weight: 700;
-    font-size: 0.82rem;
+    font-size: 0.85rem;
     cursor: pointer;
     transition: all 0.2s;
     text-align: center;
@@ -98,6 +160,7 @@
     color: var(--ink);
   }
 
+  /* ── PROGRESS ── */
   .progress-bar {
     background: var(--ink);
     padding: 0 20px 12px;
@@ -122,45 +185,96 @@
     text-align: center;
   }
 
+  /* ── MAIN ── */
   main {
     padding: 16px;
     max-width: 680px;
     margin: 0 auto;
   }
 
-  .card {
+  /* ── SECTOR CARD ── */
+  .sector {
     background: var(--card);
-    border-radius: 16px;
+    border-radius: var(--radius);
     margin-bottom: 12px;
     box-shadow: var(--shadow);
+    overflow: hidden;
     border: 1.5px solid var(--border);
-    padding: 14px 16px;
   }
-
-  .card-header {
+  .sector-header {
     display: flex;
-    justify-content: space-between;
     align-items: center;
-    font-family: 'Syne', sans-serif;
-    font-weight: 700;
-    font-size: 0.95rem;
-    margin-bottom: 10px;
-    color: var(--ink);
+    gap: 10px;
+    padding: 12px 14px;
+    cursor: pointer;
+    user-select: none;
+    -webkit-tap-highlight-color: transparent;
+    background: var(--card);
   }
+  .sector-header:active { background: #f5f0e8; }
+  .sector-emoji {
+    font-size: 1.25rem;
+    width: 34px;
+    height: 34px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--bg);
+    border-radius: 10px;
+    flex-shrink: 0;
+  }
+  .sector-title {
+    font-family: 'Syne', sans-serif;
+    font-size: 0.92rem;
+    font-weight: 700;
+    flex: 1;
+  }
+  .sector-count {
+    font-size: 0.72rem;
+    color: var(--muted);
+    font-weight: 700;
+    background: var(--bg);
+    border-radius: 20px;
+    padding: 3px 9px;
+  }
+  .sector-count.has-items { background: #ffe4cc; color: var(--accent); }
+  .sector-count.all-done { background: #d4edda; color: var(--accent2); }
 
+  .sector-chevron {
+    color: var(--muted);
+    font-size: 0.75rem;
+    transition: transform 0.25s;
+  }
+  .sector.open .sector-chevron { transform: rotate(180deg); }
+
+  .sector-body {
+    display: none;
+    border-top: 1.5px solid var(--border);
+    padding: 8px 12px 12px;
+  }
+  .sector.open .sector-body { display: block; }
+
+  /* ── ITEM ROW ── */
+  .item-list { list-style: none; }
   .item {
     display: flex;
     align-items: center;
-    gap: 12px;
-    padding: 10px 4px;
+    gap: 10px;
+    padding: 9px 4px;
     border-bottom: 1px solid var(--border);
   }
   .item:last-child { border-bottom: none; }
 
+  .item.selected-mode-armar {
+    background-color: rgba(232, 93, 38, 0.06);
+    border-radius: 8px;
+    padding: 8px 6px;
+  }
+
   .item-name {
     flex: 1;
     font-weight: 500;
-    font-size: 0.95rem;
+    font-size: 0.92rem;
     line-height: 1.3;
   }
   .item.comprado .item-name {
@@ -179,7 +293,7 @@
     width: 24px;
     height: 24px;
     border: 2px solid var(--border);
-    border-radius: 8px;
+    border-radius: 7px;
     cursor: pointer;
     display: flex;
     align-items: center;
@@ -190,158 +304,122 @@
     transition: all 0.15s;
     user-select: none;
   }
-  .item-check.selected {
-    background: var(--accent);
-    border-color: var(--accent);
-    color: #fff;
-  }
-  .item-check.comprado {
-    background: var(--accent2);
-    border-color: var(--accent2);
-    color: #fff;
-  }
+  .item-check.selected { background: var(--accent); border-color: var(--accent); color: #fff; }
+  .item-check.comprado { background: var(--accent2); border-color: var(--accent2); color: #fff; }
 
+  /* ── STOCK CONTROLS ── */
   .stock-controls {
     display: flex;
     align-items: center;
     gap: 6px;
     background: var(--bg);
-    padding: 4px 8px;
+    padding: 3px 8px;
     border-radius: 10px;
   }
   .stock-btn {
     background: none;
     border: none;
-    font-size: 1.2rem;
+    font-size: 1.15rem;
     font-weight: 700;
     cursor: pointer;
     color: var(--accent);
-    width: 26px;
-    height: 26px;
+    width: 24px;
+    height: 24px;
     display: flex;
     align-items: center;
     justify-content: center;
     border-radius: 6px;
   }
   .stock-btn:hover { background: rgba(0,0,0,0.05); }
-  .stock-val {
-    font-weight: 700;
-    font-size: 0.95rem;
-    min-width: 24px;
-    text-align: center;
-  }
+  .stock-val { font-weight: 700; font-size: 0.9rem; min-width: 22px; text-align: center; }
 
-  .add-box {
-    display: flex;
-    gap: 8px;
-    margin-bottom: 14px;
-  }
+  /* ── INPUTS / BOTONES ── */
+  .add-row { display: flex; gap: 8px; margin-top: 10px; }
   .add-input {
-    flex: 1;
-    padding: 10px 12px;
-    border: 1.5px solid var(--border);
-    border-radius: 10px;
-    font-family: 'DM Sans', sans-serif;
-    font-size: 0.9rem;
-    outline: none;
-    background: var(--bg);
+    flex: 1; padding: 8px 12px; border: 1.5px solid var(--border); border-radius: 10px;
+    font-family: 'DM Sans', sans-serif; font-size: 0.88rem; outline: none; background: var(--bg);
   }
   .add-input:focus { border-color: var(--accent); }
-
-  .btn {
-    background: var(--accent);
-    color: #fff;
-    border: none;
-    border-radius: 10px;
-    padding: 10px 16px;
-    font-family: 'Syne', sans-serif;
-    font-weight: 700;
-    cursor: pointer;
-    transition: background 0.2s;
+  
+  .add-btn {
+    background: var(--accent); color: #fff; border: none; border-radius: 10px;
+    padding: 8px 14px; font-family: 'Syne', sans-serif; font-weight: 700; font-size: 0.85rem; cursor: pointer;
   }
-  .btn:hover { background: var(--accent-hover); }
-  .btn.secondary {
-    background: var(--bg);
-    color: var(--ink);
-    border: 1.5px solid var(--border);
-  }
+  .add-btn:hover { background: var(--accent-hover); }
 
   .item-del {
-    background: none;
-    border: none;
-    color: #bbb;
-    cursor: pointer;
-    font-size: 1rem;
-    padding: 4px 6px;
+    background: none; border: none; color: #ccc; cursor: pointer; font-size: 0.95rem; padding: 4px;
   }
   .item-del:hover { color: var(--accent); }
 
-  /* Modals */
+  /* ── MODALS TEMÁTICOS ── */
   .modal-overlay {
-    position: fixed;
-    inset: 0;
-    background: rgba(0,0,0,0.6);
-    display: flex;
-    align-items: flex-end;
-    justify-content: center;
-    opacity: 0;
-    pointer-events: none;
-    transition: opacity 0.2s;
-    z-index: 200;
+    position: fixed; inset: 0; background: rgba(26,26,26,0.7); backdrop-filter: blur(2px);
+    display: flex; align-items: flex-end; justify-content: center;
+    opacity: 0; pointer-events: none; transition: opacity 0.3s; z-index: 200;
   }
   .modal-overlay.open { opacity: 1; pointer-events: all; }
   .modal {
-    background: var(--card);
-    border-radius: 24px 24px 0 0;
-    padding: 26px 22px 34px;
-    width: 100%;
-    max-width: 680px;
-    transform: translateY(30px);
-    transition: transform 0.25s;
+    background: var(--card); border-radius: 28px 28px 0 0; padding: 30px 24px 40px;
+    width: 100%; max-width: 680px; transform: translateY(100%); transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.1);
+    box-shadow: 0 -10px 40px rgba(0,0,0,0.2); position: relative;
   }
   .modal-overlay.open .modal { transform: translateY(0); }
-  .modal h2 { margin-bottom: 8px; font-family: 'Syne', sans-serif; font-size: 1.2rem; }
-  .modal p { color: var(--muted); margin-bottom: 18px; font-size: 0.9rem; line-height: 1.4; }
-  .modal-actions { display: flex; gap: 10px; }
-  .modal-input {
-    width: 100%;
-    padding: 12px;
-    font-size: 1.3rem;
-    font-weight: 700;
-    text-align: center;
-    border: 2px solid var(--border);
-    border-radius: 12px;
-    margin-bottom: 18px;
-    outline: none;
+  
+  .modal-icon-top {
+    font-size: 3rem; position: absolute; top: -25px; left: 50%; transform: translateX(-50%);
+    background: var(--card); border-radius: 50%; padding: 5px;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.1);
   }
 
+  .modal h2 { margin-top: 10px; margin-bottom: 8px; font-family: 'Syne', sans-serif; font-size: 1.3rem; text-align: center; }
+  .modal p { color: var(--muted); margin-bottom: 22px; font-size: 0.95rem; line-height: 1.5; text-align: center; }
+  .modal-actions { display: flex; gap: 12px; }
+  
+  .modal-input {
+    width: 100%; padding: 15px; font-size: 1.4rem; font-weight: 700; text-align: center;
+    border: 2px solid var(--border); border-radius: 14px; margin-bottom: 22px; outline: none; background: var(--bg);
+  }
+  .modal-input:focus { border-color: var(--accent); }
+
+  .btn {
+    flex: 1; padding: 14px; border-radius: 14px; border: none;
+    font-family: 'Syne', sans-serif; font-weight: 800; font-size: 0.95rem; cursor: pointer; transition: transform 0.1s;
+  }
+  .btn:active { transform: scale(0.97); }
+  .btn.confirm { background: var(--accent); color: #fff; box-shadow: 0 4px 12px rgba(232,93,38,0.3); }
+  .btn.confirm-alt { background: var(--accent2); color: #fff; box-shadow: 0 4px 12px rgba(45,106,79,0.3); }
+  .btn.danger { background: #e63946; color: #fff; box-shadow: 0 4px 12px rgba(230,57,70,0.3); }
+  .btn.secondary { background: var(--bg); color: var(--ink); border: 1.5px solid var(--border); }
+
+  /* ── TOAST ── */
   .toast {
-    position: fixed;
-    top: 130px;
-    left: 50%;
-    transform: translateX(-50%) translateY(-10px);
-    background: var(--ink);
-    color: #fff;
-    padding: 8px 18px;
-    border-radius: 99px;
-    font-size: 0.85rem;
-    font-weight: 500;
-    opacity: 0;
-    pointer-events: none;
-    transition: all 0.25s;
-    z-index: 300;
+    position: fixed; top: 130px; left: 50%; transform: translateX(-50%) translateY(-10px);
+    background: var(--ink); color: #fff; padding: 10px 20px; border-radius: 99px;
+    font-size: 0.85rem; font-weight: 600; opacity: 0; pointer-events: none; transition: all 0.3s; z-index: 300;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.2); display: flex; align-items: center; gap: 8px;
   }
   .toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
 </style>
 </head>
 <body>
 
+<!-- PANTALLA DE CARGA -->
+<div id="loader-overlay">
+  <div class="loader-title">Cargando <span>SúperApp</span>...</div>
+  <div class="checkout-lane">
+    <div class="cart-icon">🛒</div>
+    <div class="cashier-icon">🏪</div>
+  </div>
+  <div class="loader-text">Acomodando góndolas...</div>
+</div>
+
 <header>
   <div class="header-top">
-    <h1>🛒 Super <span>& Almacén</span></h1>
+    <h1>🛒 Súper <span>& Almacén</span></h1>
     <div class="header-actions">
-      <button class="btn-header" onclick="sembrarBaseSiEstaVacio()">Poblar Base</button>
-      <button class="btn-header danger" onclick="vaciarCompraActual()">↺ Vaciar</button>
+      <button class="btn-header" onclick="toggleExpandAll()">↕ Todo</button>
+      <button class="btn-header danger" onclick="pedirVaciarCompra()">↺ Vaciar</button>
     </div>
   </div>
   <div class="tabs">
@@ -353,37 +431,55 @@
 
 <div class="progress-bar">
   <div class="progress-track"><div class="progress-fill" id="progressFill" style="width:0%"></div></div>
-  <div class="progress-label" id="progressLabel">Conectando con Firestore...</div>
+  <div class="progress-label" id="progressLabel">Sincronizando...</div>
 </div>
 
-<main id="app-content">Conectando a la base de datos...</main>
+<main id="app-content"></main>
 
-<!-- Modal: Producto en Almacén -> Solicitar cantidad -->
+<!-- MODAL: CANTIDAD (ALMACÉN) -->
 <div class="modal-overlay" id="modal-qty">
   <div class="modal">
-    <h2 id="mq-title">¿Cuántas unidades compraste?</h2>
-    <p>Se sumarán automáticamente al stock de tu Almacén en casa.</p>
+    <div class="modal-icon-top">📦</div>
+    <h2 id="mq-title">¿Cuántas unidades llevás?</h2>
+    <p>Se sumarán automáticamente al stock de tu Almacén en casa al tildarlo.</p>
     <input type="number" id="mq-input" class="modal-input" value="1" min="1">
     <div class="modal-actions">
-      <button class="btn secondary" style="flex:1" onclick="closeModals()">Cancelar</button>
-      <button class="btn" style="flex:1" onclick="confirmarCantidadComprada()">Guardar</button>
+      <button class="btn secondary" onclick="closeModals()">Cancelar</button>
+      <button class="btn confirm" onclick="confirmarCantidadComprada()">✓ Al Changuito</button>
     </div>
   </div>
 </div>
 
-<!-- Modal: Producto NO en Almacén -> Preguntar si trackear -->
+<!-- MODAL: PREGUNTAR TRACKEO -->
 <div class="modal-overlay" id="modal-ask">
   <div class="modal">
+    <div class="modal-icon-top">🤔</div>
     <h2 id="ma-title">¿Guardar en el Almacén?</h2>
-    <p id="ma-desc">Este producto no forma parte de tu inventario habitual en casa. ¿Querés agregarlo para controlar su stock a partir de ahora?</p>
+    <p id="ma-desc">Este producto no forma parte de tu inventario en casa. ¿Querés registrarlo para controlar su stock a partir de ahora?</p>
     <div class="modal-actions">
-      <button class="btn secondary" style="flex:1" onclick="comprarSinAlmacen()">Solo tildar</button>
-      <button class="btn" style="flex:1" onclick="aceptarTrackeoAlmacen()">Sí, agregarlo</button>
+      <button class="btn secondary" onclick="comprarSinAlmacen()">No, solo tildar</button>
+      <button class="btn confirm-alt" onclick="aceptarTrackeoAlmacen()">Sí, agregarlo</button>
     </div>
   </div>
 </div>
 
-<div class="toast" id="toast"></div>
+<!-- MODAL: CONFIRMACIONES GENÉRICAS (BORRAR / VACIAR) -->
+<div class="modal-overlay" id="modal-alert">
+  <div class="modal">
+    <div class="modal-icon-top" id="alert-icon">⚠️</div>
+    <h2 id="alert-title">Atención</h2>
+    <p id="alert-desc">¿Estás seguro?</p>
+    <div class="modal-actions">
+      <button class="btn secondary" onclick="closeModals()">Cancelar</button>
+      <button class="btn danger" id="alert-confirm-btn" onclick="">Confirmar</button>
+    </div>
+  </div>
+</div>
+
+<div class="toast" id="toast">
+  <span id="toast-icon">✨</span>
+  <span id="toast-text">Mensaje</span>
+</div>
 
 <script type="module">
   import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-app.js";
@@ -405,17 +501,36 @@
   const db = getFirestore(app);
   const productosCol = collection(db, "productos");
 
+  const SECTORES_META = [
+    { id: 'almacen', emoji: '🫙', name: 'Almacén / Despensa' },
+    { id: 'lacteos', emoji: '🧀', name: 'Lácteos y Frescos' },
+    { id: 'carnes', emoji: '🥩', name: 'Carnes y Congelados' },
+    { id: 'frutas', emoji: '🥦', name: 'Frutas y Verduras' },
+    { id: 'limpieza', emoji: '🧹', name: 'Artículos de Limpieza' },
+    { id: 'higiene', emoji: '🧴', name: 'Higiene Personal' },
+    { id: 'bebidas', emoji: '🥤', name: 'Bebidas' },
+    { id: 'extras', emoji: '🐾', name: 'Mascotas / Extras' }
+  ];
+
+  let openSectors = { almacen: true };
   let productos = [];
   let currentMode = 'armar';
   let currentPendingItem = null;
+  let isFirstLoad = true;
 
-  // Escuchar sincronización en tiempo real
+  // Escucha de Firebase en tiempo real
   onSnapshot(productosCol, (snapshot) => {
     productos = snapshot.docs.map(d => ({ id: d.id, ...d.data() }));
+    
+    // Ocultar Loader luego de la primera carga exitosa
+    if(isFirstLoad) {
+      setTimeout(() => {
+        document.getElementById('loader-overlay').classList.add('hidden');
+      }, 1000); // Pequeño delay para que se aprecie la animación
+      isFirstLoad = false;
+    }
+    
     render();
-  }, (err) => {
-    console.error("Error al conectar Firestore:", err);
-    document.getElementById('progressLabel').textContent = "Error de conexión o permisos en Firestore.";
   });
 
   window.setMode = (mode) => {
@@ -429,122 +544,155 @@
     const contenedor = document.getElementById('app-content');
     contenedor.innerHTML = '';
 
-    if (currentMode === 'almacen') renderAlmacen(contenedor);
-    if (currentMode === 'armar') renderArmar(contenedor);
-    if (currentMode === 'comprar') renderComprar(contenedor);
+    const grupos = {};
+    SECTORES_META.forEach(s => { grupos[s.id] = []; });
+    productos.forEach(p => {
+      const cat = p.categoriaId || 'extras';
+      if (!grupos[cat]) grupos[cat] = [];
+      grupos[cat].push(p);
+    });
+
+    if (currentMode === 'almacen') renderAlmacen(contenedor, grupos);
+    if (currentMode === 'armar') renderArmar(contenedor, grupos);
+    if (currentMode === 'comprar') renderComprar(contenedor, grupos);
 
     updateProgress();
   }
 
-  // 1. VISTA ALMACÉN
-  function renderAlmacen(container) {
-    const items = productos.filter(p => p.en_almacen).sort((a,b) => a.nombre.localeCompare(b.nombre));
+  function renderAlmacen(container, grupos) {
+    SECTORES_META.forEach(sec => {
+      const items = (grupos[sec.id] || []).filter(p => p.en_almacen).sort((a,b) => a.nombre.localeCompare(b.nombre));
+      if (items.length === 0) return;
 
-    let html = `
-      <div class="card">
-        <div class="card-header">
-          <span>Inventario en Casa (${items.length})</span>
+      const isOpen = openSectors[sec.id] ?? false;
+      const card = document.createElement('div');
+      card.className = `sector ${isOpen ? 'open' : ''}`;
+      
+      card.innerHTML = `
+        <div class="sector-header" onclick="window.toggleSector('${sec.id}')">
+          <div class="sector-emoji">${sec.emoji}</div>
+          <div class="sector-title">${sec.name}</div>
+          <div class="sector-count">${items.length} con stock</div>
+          <div class="sector-chevron">▼</div>
         </div>
-        <div class="add-box">
-          <input type="text" id="new-almacen-input" class="add-input" placeholder="Nuevo producto para stock..." onkeydown="if(event.key==='Enter') window.crearProductoAlmacen()">
-          <button class="btn" onclick="window.crearProductoAlmacen()">+ Almacén</button>
-        </div>
-    `;
-
-    if (items.length === 0) {
-      html += `<p style="color:var(--muted); text-align:center; padding: 20px 0;">No tenés productos cargados en el Almacén.</p>`;
-    } else {
-      items.forEach(item => {
-        html += `
-          <div class="item">
-            <span class="item-name">${item.nombre}</span>
-            <div class="stock-controls">
-              <button class="stock-btn" onclick="window.modificarStock('${item.id}', -1)">-</button>
-              <span class="stock-val">${item.stock || 0}</span>
-              <button class="stock-btn" onclick="window.modificarStock('${item.id}', 1)">+</button>
-            </div>
-            <button class="item-del" onclick="window.quitarDeAlmacen('${item.id}')" title="Quitar de almacén">✕</button>
-          </div>
-        `;
-      });
-    }
-
-    html += `</div>`;
-    container.innerHTML = html;
-  }
-
-  // 2. VISTA ARMAR LISTA
-  function renderArmar(container) {
-    const items = [...productos].sort((a,b) => a.nombre.localeCompare(b.nombre));
-    const seleccionados = items.filter(p => p.en_lista).length;
-
-    let html = `
-      <div class="card">
-        <div class="card-header">
-          <span>Seleccionar para el Súper</span>
-          <small style="color:var(--muted)">${seleccionados} marcados</small>
-        </div>
-        <div class="add-box">
-          <input type="text" id="new-item-input" class="add-input" placeholder="Agregar ítem puntual a la lista..." onkeydown="if(event.key==='Enter') window.crearProductoLista()">
-          <button class="btn" onclick="window.crearProductoLista()">+</button>
-        </div>
-    `;
-
-    if (items.length === 0) {
-      html += `<p style="color:var(--muted); text-align:center; padding: 20px 0;">La base de datos está vacía. Podés usar el botón 'Poblar Base' arriba.</p>`;
-    } else {
-      items.forEach(item => {
-        const isSel = !!item.en_lista;
-        html += `
-          <div class="item">
-            <div class="item-check ${isSel ? 'selected' : ''}" onclick="window.toggleLista('${item.id}', ${isSel})">
-              ${isSel ? '+' : ''}
-            </div>
-            <span class="item-name" onclick="window.toggleLista('${item.id}', ${isSel})" style="cursor:pointer;">
-              ${item.nombre}
-              ${item.en_almacen ? `<span class="item-meta">(Stock: ${item.stock || 0})</span>` : ''}
-            </span>
-            <button class="item-del" onclick="window.eliminarProductoDefinitivo('${item.id}')" title="Borrar">✕</button>
-          </div>
-        `;
-      });
-    }
-
-    html += `</div>`;
-    container.innerHTML = html;
-  }
-
-  // 3. VISTA DE COMPRAS
-  function renderComprar(container) {
-    const items = productos.filter(p => p.en_lista).sort((a,b) => a.nombre.localeCompare(b.nombre));
-
-    if (items.length === 0) {
-      container.innerHTML = `
-        <div class="card" style="text-align:center; padding: 40px 20px; color:var(--muted);">
-          <div style="font-size: 2.5rem; margin-bottom: 10px;">🛒</div>
-          <p>El carrito está vacío.<br>Andá a <b>Armar Lista</b> para seleccionar lo que vas a comprar.</p>
+        <div class="sector-body">
+          <ul class="item-list" id="list-alm-${sec.id}"></ul>
         </div>
       `;
-      return;
-    }
+      container.appendChild(card);
+      const ul = card.querySelector(`#list-alm-${sec.id}`);
+      items.forEach(item => {
+        const li = document.createElement('li');
+        li.className = 'item';
+        li.innerHTML = `
+          <span class="item-name">${item.nombre}</span>
+          <div class="stock-controls">
+            <button class="stock-btn" onclick="window.modificarStock('${item.id}', -1)">-</button>
+            <span class="stock-val">${item.stock || 0}</span>
+            <button class="stock-btn" onclick="window.modificarStock('${item.id}', 1)">+</button>
+          </div>
+          <button class="item-del" onclick="window.quitarDeAlmacen('${item.id}')" title="No controlar stock">✕</button>
+        `;
+        ul.appendChild(li);
+      });
+    });
+  }
 
-    let html = `<div class="card"><div class="card-header"><span>Góndola</span></div>`;
-    items.forEach(item => {
-      const isComprado = !!item.comprado;
-      html += `
-        <div class="item ${isComprado ? 'comprado' : ''}">
-          <div class="item-check ${isComprado ? 'comprado' : ''}" onclick="window.handleCheckCompra('${item.id}')">
-            ${isComprado ? '✓' : ''}
+  function renderArmar(container, grupos) {
+    SECTORES_META.forEach(sec => {
+      const items = (grupos[sec.id] || []).sort((a,b) => a.nombre.localeCompare(b.nombre));
+      const seleccionados = items.filter(p => p.en_lista).length;
+      const isOpen = openSectors[sec.id] ?? false;
+      const card = document.createElement('div');
+      card.className = `sector ${isOpen ? 'open' : ''}`;
+
+      card.innerHTML = `
+        <div class="sector-header" onclick="window.toggleSector('${sec.id}')">
+          <div class="sector-emoji">${sec.emoji}</div>
+          <div class="sector-title">${sec.name}</div>
+          <div class="sector-count ${seleccionados > 0 ? 'has-items' : ''}">${seleccionados}/${items.length}</div>
+          <div class="sector-chevron">▼</div>
+        </div>
+        <div class="sector-body">
+          <ul class="item-list" id="list-armar-${sec.id}"></ul>
+          <div class="add-row">
+            <input class="add-input" id="input-${sec.id}" placeholder="Agregar a ${sec.name}..." onkeydown="if(event.key==='Enter') window.agregarNuevoProducto('${sec.id}')">
+            <button class="add-btn" onclick="window.agregarNuevoProducto('${sec.id}')">+</button>
+          </div>
+        </div>
+      `;
+      container.appendChild(card);
+      const ul = card.querySelector(`#list-armar-${sec.id}`);
+      items.forEach(item => {
+        const isSel = !!item.en_lista;
+        const li = document.createElement('li');
+        li.className = `item ${isSel ? 'selected-mode-armar' : ''}`;
+        li.innerHTML = `
+          <div class="item-check ${isSel ? 'selected' : ''}" onclick="window.toggleLista('${item.id}', ${isSel})">
+            ${isSel ? '+' : ''}
+          </div>
+          <span class="item-name" onclick="window.toggleLista('${item.id}', ${isSel})" style="cursor:pointer;">
+            ${item.nombre}
+            ${item.en_almacen ? `<span class="item-meta">(Stock: ${item.stock || 0})</span>` : ''}
+          </span>
+          <button class="item-del" onclick="window.pedirEliminarProducto('${item.id}', '${item.nombre}')" title="Borrar de la base">✕</button>
+        `;
+        ul.appendChild(li);
+      });
+    });
+  }
+
+  function renderComprar(container, grupos) {
+    let hayItems = false;
+    SECTORES_META.forEach(sec => {
+      const items = (grupos[sec.id] || []).filter(p => p.en_lista).sort((a,b) => a.nombre.localeCompare(b.nombre));
+      if (items.length === 0) return;
+      hayItems = true;
+
+      const comprados = items.filter(p => p.comprado).length;
+      const isOpen = openSectors[sec.id] ?? true;
+      const card = document.createElement('div');
+      card.className = `sector ${isOpen ? 'open' : ''}`;
+
+      card.innerHTML = `
+        <div class="sector-header" onclick="window.toggleSector('${sec.id}')">
+          <div class="sector-emoji">${sec.emoji}</div>
+          <div class="sector-title">${sec.name}</div>
+          <div class="sector-count ${comprados === items.length ? 'all-done' : ''}">${comprados}/${items.length}</div>
+          <div class="sector-chevron">▼</div>
+        </div>
+        <div class="sector-body">
+          <ul class="item-list" id="list-comp-${sec.id}"></ul>
+        </div>
+      `;
+      container.appendChild(card);
+      const ul = card.querySelector(`#list-comp-${sec.id}`);
+      items.forEach(item => {
+        const isComp = !!item.comprado;
+        const li = document.createElement('li');
+        li.className = `item ${isComp ? 'comprado' : ''}`;
+        li.innerHTML = `
+          <div class="item-check ${isComp ? 'comprado' : ''}" onclick="window.handleCheckCompra('${item.id}')">
+            ${isComp ? '✓' : ''}
           </div>
           <span class="item-name" onclick="window.handleCheckCompra('${item.id}')" style="cursor:pointer;">
             ${item.nombre}
             ${item.en_almacen ? `<span class="item-meta">[Almacén]</span>` : ''}
           </span>
+        `;
+        ul.appendChild(li);
+      });
+    });
+
+    if (!hayItems) {
+      container.innerHTML = `
+        <div class="sector" style="text-align:center; padding: 50px 20px; color:var(--muted); background:transparent; border:none; box-shadow:none;">
+          <div style="font-size: 3.5rem; margin-bottom: 12px; filter: grayscale(1); opacity:0.5;">🛒</div>
+          <p style="font-size: 1.1rem; font-weight:500;">El changuito está vacío.</p>
+          <p style="font-size: 0.9rem; margin-top:5px;">Andá a <b>Armar Lista</b> para empezar.</p>
         </div>
       `;
-    });
-    html += `</div>`;
-    container.innerHTML = html;
+    }
   }
 
   function updateProgress() {
@@ -554,53 +702,41 @@
     const totalComprados = productos.filter(p => p.en_lista && p.comprado).length;
 
     if (currentMode === 'almacen') {
-      const totalAlm = productos.filter(p => p.en_almacen).length;
-      fill.style.width = '100%';
-      fill.style.backgroundColor = 'var(--ink)';
-      label.textContent = `${totalAlm} producto(s) registrados en el Almacén`;
+      const almCount = productos.filter(p => p.en_almacen).length;
+      fill.style.width = '100%'; fill.style.backgroundColor = 'var(--ink)';
+      label.textContent = `${almCount} producto(s) en seguimiento de almacén`;
     } else if (currentMode === 'armar') {
-      fill.style.width = '100%';
-      fill.style.backgroundColor = 'var(--accent)';
-      label.textContent = `${totalLista} producto(s) elegidos para el changuito`;
+      fill.style.width = '100%'; fill.style.backgroundColor = 'var(--accent)';
+      label.textContent = `${totalLista} producto(s) seleccionados para comprar`;
     } else {
       const pct = totalLista ? Math.round((totalComprados / totalLista) * 100) : 0;
-      fill.style.width = pct + '%';
-      fill.style.backgroundColor = 'var(--accent2)';
+      fill.style.width = pct + '%'; fill.style.backgroundColor = 'var(--accent2)';
       label.textContent = totalLista === 0 
         ? 'No hay productos en la lista' 
-        : `${totalComprados} de ${totalLista} comprados (${pct}%)`;
+        : (pct === 100 ? '¡Changuito completo! 🎉' : `${totalComprados} de ${totalLista} comprados (${pct}%)`);
     }
   }
 
-  // OPERACIONES FIRESTORE
-  window.crearProductoAlmacen = async () => {
-    const inp = document.getElementById('new-almacen-input');
-    const val = inp.value.trim();
-    if (!val) return;
-    await addDoc(productosCol, {
-      nombre: val,
-      en_almacen: true,
-      stock: 0,
-      en_lista: false,
-      comprado: false
-    });
-    inp.value = '';
-    showToast(`"${val}" agregado al almacén`);
+  window.toggleSector = (id) => { openSectors[id] = !openSectors[id]; render(); };
+  window.toggleExpandAll = () => {
+    const todosAbiertos = SECTORES_META.every(s => openSectors[s.id]);
+    SECTORES_META.forEach(s => { openSectors[s.id] = !todosAbiertos; });
+    render();
   };
 
-  window.crearProductoLista = async () => {
-    const inp = document.getElementById('new-item-input');
-    const val = inp.value.trim();
-    if (!val) return;
+  // BASE DE DATOS
+  window.agregarNuevoProducto = async (catId) => {
+    const inp = document.getElementById(`input-${catId}`);
+    const nombre = inp.value.trim();
+    if (!nombre) return;
+    const sec = SECTORES_META.find(s => s.id === catId);
     await addDoc(productosCol, {
-      nombre: val,
-      en_almacen: false,
-      stock: 0,
-      en_lista: true,
-      comprado: false
+      nombre, categoriaId: catId, categoriaNombre: sec.name, emoji: sec.emoji,
+      en_almacen: ['almacen', 'limpieza', 'higiene'].includes(catId),
+      stock: 0, en_lista: true, comprado: false
     });
     inp.value = '';
-    showToast(`"${val}" agregado a la compra`);
+    showToast(`"${nombre}" agregado`, '✨');
   };
 
   window.modificarStock = async (id, delta) => {
@@ -611,38 +747,59 @@
 
   window.quitarDeAlmacen = async (id) => {
     await updateDoc(doc(db, "productos", id), { en_almacen: false });
-    showToast("Quitado del inventario de almacén");
-  };
-
-  window.eliminarProductoDefinitivo = async (id) => {
-    if (confirm("¿Borrar este producto por completo de la base de datos?")) {
-      await deleteDoc(doc(db, "productos", id));
-      showToast("Producto eliminado");
-    }
+    showToast("Quitado del almacén", '📦');
   };
 
   window.toggleLista = async (id, estadoActual) => {
-    await updateDoc(doc(db, "productos", id), {
-      en_lista: !estadoActual,
-      comprado: false
-    });
+    await updateDoc(doc(db, "productos", id), { en_lista: !estadoActual, comprado: false });
   };
 
-  window.vaciarCompraActual = async () => {
-    const seleccionados = productos.filter(p => p.en_lista);
-    if (seleccionados.length === 0) return;
-    if (confirm("¿Vaciar la lista de compras actual? El stock del almacén se mantendrá intacto.")) {
-      const batch = writeBatch(db);
-      seleccionados.forEach(p => {
-        batch.update(doc(db, "productos", p.id), { en_lista: false, comprado: false });
+  // MODALES PERSONALIZADOS DE ALERTA
+  function mostrarAlerta(icono, titulo, descripcion, textoBtn, accionConfirmar) {
+    document.getElementById('alert-icon').innerText = icono;
+    document.getElementById('alert-title').innerText = titulo;
+    document.getElementById('alert-desc').innerText = descripcion;
+    const btn = document.getElementById('alert-confirm-btn');
+    btn.innerText = textoBtn;
+    btn.onclick = () => { accionConfirmar(); closeModals(); };
+    document.getElementById('modal-alert').classList.add('open');
+  }
+
+  window.pedirEliminarProducto = (id, nombre) => {
+    mostrarAlerta('🗑️', '¿Eliminar producto?', 
+      `Estás por borrar "${nombre}" definitivamente de toda la aplicación.`, 
+      'Sí, eliminar', 
+      async () => {
+        await deleteDoc(doc(db, "productos", id));
+        showToast("Producto eliminado", '🗑️');
       });
-      await batch.commit();
-      setMode('armar');
-      showToast("Lista de compra reiniciada");
-    }
   };
 
-  // CHECK Y MODALES EN MODO COMPRAS
+  window.pedirVaciarCompra = () => {
+    const seleccionados = productos.filter(p => p.en_lista);
+    if (seleccionados.length === 0) {
+      showToast("La lista ya está vacía", '🛒'); return;
+    }
+    mostrarAlerta('🛒', '¡Atención en Góndola!', 
+      'Vas a desmarcar todos los productos de la lista actual para empezar una nueva compra.\nEl stock de tu casa no se modificará.', 
+      'Vaciar Lista', 
+      async () => {
+        const batch = writeBatch(db);
+        seleccionados.forEach(p => {
+          batch.update(doc(db, "productos", p.id), { en_lista: false, comprado: false });
+        });
+        await batch.commit();
+        setMode('armar');
+        showToast("Lista lista para la próxima", '🚀');
+      });
+  };
+
+  window.closeModals = () => {
+    document.querySelectorAll('.modal-overlay').forEach(m => m.classList.remove('open'));
+    currentPendingItem = null;
+  };
+
+  // FLUJO DE COMPRAS (CHECKOUT)
   window.handleCheckCompra = async (id) => {
     const item = productos.find(p => p.id === id);
     currentPendingItem = item;
@@ -653,31 +810,25 @@
     }
 
     if (item.en_almacen) {
-      document.getElementById('mq-title').innerText = `¿Cuántos "${item.nombre}" llevás?`;
+      document.getElementById('mq-title').innerText = `¿Cuántas unid. de ${item.nombre}?`;
       document.getElementById('mq-input').value = 1;
       document.getElementById('modal-qty').classList.add('open');
     } else {
-      document.getElementById('ma-title').innerText = `¿Almacenar "${item.nombre}"?`;
-      document.getElementById('ma-desc').innerHTML = `No tenés <b>${item.nombre}</b> en tu Almacén en casa. ¿Querés registrarlo para controlar su stock a partir de ahora?`;
+      document.getElementById('ma-title').innerText = `¿Almacenar ${item.nombre}?`;
       document.getElementById('modal-ask').classList.add('open');
     }
-  };
-
-  window.closeModals = () => {
-    document.querySelectorAll('.modal-overlay').forEach(m => m.classList.remove('open'));
-    currentPendingItem = null;
   };
 
   window.comprarSinAlmacen = async () => {
     if (!currentPendingItem) return;
     await updateDoc(doc(db, "productos", currentPendingItem.id), { comprado: true });
     closeModals();
-    showToast("Comprado (sin registrar en almacén)");
+    showToast("Comprado", '✅');
   };
 
   window.aceptarTrackeoAlmacen = () => {
     document.getElementById('modal-ask').classList.remove('open');
-    document.getElementById('mq-title').innerText = `¿Cuántos "${currentPendingItem.nombre}" llevás?`;
+    document.getElementById('mq-title').innerText = `¿Cuántas unid. de ${currentPendingItem.nombre}?`;
     document.getElementById('mq-input').value = 1;
     document.getElementById('modal-qty').classList.add('open');
   };
@@ -693,47 +844,15 @@
       stock: nuevoStock
     });
     closeModals();
-    showToast(`Comprado (+${qty} al almacén)`);
+    showToast(`Stock actualizado en casa`, '🏠');
   };
 
-  // POBLAR BASE INICIAL CON ALMACÉN
-  window.sembrarBaseSiEstaVacio = async () => {
-    if (productos.length > 0 && !confirm("Ya tenés productos guardados. ¿Querés sumar la lista estándar de todas formas?")) {
-      return;
-    }
-
-    const itemsIniciales = [
-      { n: "Aceite", a: true }, { n: "Arroz", a: true }, { n: "Fideos", a: true },
-      { n: "Atún en lata", a: true }, { n: "Café", a: true }, { n: "Yerba mate", a: true },
-      { n: "Azúcar", a: true }, { n: "Sal fina", a: true }, { n: "Harina", a: true },
-      { n: "Leche larga vida", a: true }, { n: "Puré de tomate", a: true },
-      { n: "Lavandina", a: true }, { n: "Detergente", a: true }, { n: "Papel higiénico", a: true },
-      { n: "Rollo de cocina", a: true }, { n: "Jabón de tocador", a: true },
-      { n: "Huevos", a: false }, { n: "Queso cremoso", a: false }, { n: "Carne picada", a: false },
-      { n: "Pechuga de pollo", a: false }, { n: "Tomate", a: false }, { n: "Cebolla", a: false }
-    ];
-
-    const batch = writeBatch(db);
-    itemsIniciales.forEach(item => {
-      const nuevoRef = doc(productosCol);
-      batch.set(nuevoRef, {
-        nombre: item.n,
-        en_almacen: item.a,
-        stock: item.a ? 1 : 0,
-        en_lista: false,
-        comprado: false
-      });
-    });
-
-    await batch.commit();
-    showToast("Base poblada exitosamente");
-  };
-
-  function showToast(msg) {
+  function showToast(msg, icono = '✨') {
+    document.getElementById('toast-icon').innerText = icono;
+    document.getElementById('toast-text').innerText = msg;
     const t = document.getElementById('toast');
-    t.textContent = msg;
     t.classList.add('show');
-    setTimeout(() => t.classList.remove('show'), 2000);
+    setTimeout(() => t.classList.remove('show'), 2500);
   }
 </script>
 </body>

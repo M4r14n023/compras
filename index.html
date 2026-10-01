@@ -30,362 +30,104 @@
     padding-bottom: 120px;
   }
 
-  /* ── LOADER (CARRITO Y CAJA) ── */
+  /* ── LOADER ── */
   #loader-overlay {
-    position: fixed;
-    inset: 0;
-    background: var(--bg);
-    z-index: 9999;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
+    position: fixed; inset: 0; background: var(--bg); z-index: 9999;
+    display: flex; flex-direction: column; align-items: center; justify-content: center;
     transition: opacity 0.6s ease-out, visibility 0.6s ease-out;
   }
-  #loader-overlay.hidden {
-    opacity: 0;
-    visibility: hidden;
-  }
-  .loader-title {
-    font-family: 'Syne', sans-serif;
-    font-size: 1.5rem;
-    font-weight: 800;
-    color: var(--ink);
-    margin-bottom: 40px;
-    letter-spacing: -0.5px;
-  }
+  #loader-overlay.hidden { opacity: 0; visibility: hidden; }
+  .loader-title { font-family: 'Syne', sans-serif; font-size: 1.5rem; font-weight: 800; margin-bottom: 40px; }
   .loader-title span { color: var(--accent); }
-  
-  .checkout-lane {
-    width: 220px;
-    height: 4px;
-    background: var(--border);
-    border-radius: 2px;
-    position: relative;
-  }
-  .cart-icon {
-    font-size: 2.5rem;
-    position: absolute;
-    bottom: 2px;
-    left: 0;
-    animation: driveCart 2s infinite ease-in-out;
-  }
-  .cashier-icon {
-    font-size: 3rem;
-    position: absolute;
-    bottom: -4px;
-    right: -40px;
-  }
-  .loader-text {
-    margin-top: 30px;
-    font-size: 0.9rem;
-    color: var(--muted);
-    font-weight: 500;
-  }
+  .checkout-lane { width: 220px; height: 4px; background: var(--border); border-radius: 2px; position: relative; }
+  .cart-icon { font-size: 2.5rem; position: absolute; bottom: 2px; left: 0; animation: driveCart 2s infinite ease-in-out; }
+  .cashier-icon { font-size: 3rem; position: absolute; bottom: -4px; right: -40px; }
+  .loader-text { margin-top: 30px; font-size: 0.9rem; color: var(--muted); font-weight: 500; }
+  @keyframes driveCart { 0% { transform: translateX(-20px); opacity: 0; } 15% { opacity: 1; } 70% { transform: translateX(150px); opacity: 1; } 100% { transform: translateX(180px); opacity: 0; } }
 
-  @keyframes driveCart {
-    0% { transform: translateX(-20px); opacity: 0; }
-    15% { opacity: 1; }
-    70% { transform: translateX(150px); opacity: 1; }
-    100% { transform: translateX(180px); opacity: 0; }
-  }
-
-  /* ── HEADER ── */
-  header {
-    background: var(--ink);
-    color: #fff;
-    padding: 18px 20px 0;
-    position: sticky;
-    top: 0;
-    z-index: 100;
-  }
-
-  .header-top {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 14px;
-  }
-
-  header h1 {
-    font-family: 'Syne', sans-serif;
-    font-size: 1.35rem;
-    font-weight: 800;
-    letter-spacing: -0.5px;
-  }
+  /* ── HEADER & TABS ── */
+  header { background: var(--ink); color: #fff; padding: 18px 20px 0; position: sticky; top: 0; z-index: 100; }
+  .header-top { display: flex; justify-content: space-between; align-items: center; margin-bottom: 14px; }
+  header h1 { font-family: 'Syne', sans-serif; font-size: 1.35rem; font-weight: 800; }
   header h1 span { color: var(--accent3); }
-
   .header-actions { display: flex; gap: 8px; }
-
-  .btn-header {
-    background: rgba(255,255,255,0.12);
-    border: none;
-    color: #fff;
-    border-radius: 10px;
-    padding: 7px 12px;
-    font-family: 'Syne', sans-serif;
-    font-size: 0.78rem;
-    font-weight: 700;
-    cursor: pointer;
-    transition: background 0.2s;
-  }
+  .btn-header { background: rgba(255,255,255,0.12); border: none; color: #fff; border-radius: 10px; padding: 7px 12px; font-family: 'Syne', sans-serif; font-size: 0.78rem; font-weight: 700; cursor: pointer; transition: background 0.2s; }
   .btn-header:hover { background: rgba(255,255,255,0.22); }
   .btn-header.danger { background: rgba(232,93,38,0.3); color: #ffb499; }
+  
+  .tabs { display: flex; gap: 8px; padding-bottom: 12px; overflow-x: auto; }
+  .tab-btn { flex: 1; min-width: 95px; background: rgba(255,255,255,0.08); color: rgba(255,255,255,0.6); border: none; padding: 9px 8px; border-radius: 12px; font-family: 'Syne', sans-serif; font-weight: 700; font-size: 0.85rem; cursor: pointer; transition: all 0.2s; text-align: center; white-space: nowrap; }
+  .tab-btn.active { background: var(--accent3); color: var(--ink); }
 
-  /* ── TABS ── */
-  .tabs {
-    display: flex;
-    gap: 8px;
-    padding-bottom: 12px;
-    overflow-x: auto;
-  }
-  .tab-btn {
-    flex: 1;
-    min-width: 95px;
-    background: rgba(255,255,255,0.08);
-    color: rgba(255,255,255,0.6);
-    border: none;
-    padding: 9px 8px;
-    border-radius: 12px;
-    font-family: 'Syne', sans-serif;
-    font-weight: 700;
-    font-size: 0.85rem;
-    cursor: pointer;
-    transition: all 0.2s;
-    text-align: center;
-    white-space: nowrap;
-  }
-  .tab-btn.active {
-    background: var(--accent3);
-    color: var(--ink);
-  }
+  /* ── CONTROLS AREA (BUSCADOR Y VISTAS) ── */
+  #controls-area { background: var(--ink); }
+  .controls-flex { display: flex; gap: 10px; padding: 0 20px 15px; }
+  .search-input { flex: 1; padding: 10px 14px; border-radius: 12px; border: 1px solid rgba(255,255,255,0.1); background: rgba(0,0,0,0.3); color: #fff; font-family: 'DM Sans', sans-serif; outline: none; transition: border-color 0.2s;}
+  .search-input:focus { border-color: var(--accent3); }
+  .search-input::placeholder { color: rgba(255,255,255,0.4); }
+  .view-btn { background: rgba(255,255,255,0.08); border: none; border-radius: 10px; padding: 10px; color: #fff; cursor: pointer; display: flex; align-items: center; justify-content: center; font-size: 1.1rem; transition: background 0.2s;}
+  .view-btn.active { background: var(--accent3); color: var(--ink); }
 
   /* ── PROGRESS ── */
-  .progress-bar {
-    background: var(--ink);
-    padding: 0 20px 12px;
-  }
-  .progress-track {
-    background: rgba(255,255,255,0.15);
-    border-radius: 99px;
-    height: 5px;
-    overflow: hidden;
-  }
-  .progress-fill {
-    background: var(--accent3);
-    height: 100%;
-    border-radius: 99px;
-    transition: width 0.35s ease;
-  }
-  .progress-label {
-    font-size: 0.75rem;
-    color: rgba(255,255,255,0.7);
-    margin-top: 5px;
-    font-weight: 500;
-    text-align: center;
-  }
+  .progress-bar { background: var(--ink); padding: 0 20px 12px; }
+  .progress-track { background: rgba(255,255,255,0.15); border-radius: 99px; height: 5px; overflow: hidden; }
+  .progress-fill { background: var(--accent3); height: 100%; border-radius: 99px; transition: width 0.35s ease; }
+  .progress-label { font-size: 0.75rem; color: rgba(255,255,255,0.7); margin-top: 5px; font-weight: 500; text-align: center; }
 
-  /* ── MAIN ── */
-  main {
-    padding: 16px;
-    max-width: 680px;
-    margin: 0 auto;
-  }
-
-  /* ── SECTOR CARD ── */
-  .sector {
-    background: var(--card);
-    border-radius: var(--radius);
-    margin-bottom: 12px;
-    box-shadow: var(--shadow);
-    overflow: hidden;
-    border: 1.5px solid var(--border);
-  }
-  .sector-header {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    padding: 12px 14px;
-    cursor: pointer;
-    user-select: none;
-    -webkit-tap-highlight-color: transparent;
-    background: var(--card);
-  }
-  .sector-header:active { background: #f5f0e8; }
-  .sector-emoji {
-    font-size: 1.25rem;
-    width: 34px;
-    height: 34px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    background: var(--bg);
-    border-radius: 10px;
-    flex-shrink: 0;
-  }
-  .sector-title {
-    font-family: 'Syne', sans-serif;
-    font-size: 0.92rem;
-    font-weight: 700;
-    flex: 1;
-  }
-  .sector-count {
-    font-size: 0.72rem;
-    color: var(--muted);
-    font-weight: 700;
-    background: var(--bg);
-    border-radius: 20px;
-    padding: 3px 9px;
-  }
+  /* ── MAIN & CARDS ── */
+  main { padding: 16px; max-width: 680px; margin: 0 auto; }
+  .sector { background: var(--card); border-radius: var(--radius); margin-bottom: 12px; box-shadow: var(--shadow); overflow: hidden; border: 1.5px solid var(--border); }
+  .sector-header { display: flex; align-items: center; gap: 10px; padding: 12px 14px; cursor: pointer; user-select: none; -webkit-tap-highlight-color: transparent; background: var(--card); }
+  .sector-emoji { font-size: 1.25rem; width: 34px; height: 34px; display: flex; align-items: center; justify-content: center; background: var(--bg); border-radius: 10px; flex-shrink: 0; }
+  .sector-title { font-family: 'Syne', sans-serif; font-size: 0.92rem; font-weight: 700; flex: 1; }
+  .sector-count { font-size: 0.72rem; color: var(--muted); font-weight: 700; background: var(--bg); border-radius: 20px; padding: 3px 9px; }
   .sector-count.has-items { background: #ffe4cc; color: var(--accent); }
   .sector-count.all-done { background: #d4edda; color: var(--accent2); }
-
-  .sector-chevron {
-    color: var(--muted);
-    font-size: 0.75rem;
-    transition: transform 0.25s;
-  }
+  .sector-count.danger { background: #ffe3e3; color: #e63946; }
+  .sector-chevron { color: var(--muted); font-size: 0.75rem; transition: transform 0.25s; }
   .sector.open .sector-chevron { transform: rotate(180deg); }
-
-  .sector-body {
-    display: none;
-    border-top: 1.5px solid var(--border);
-    padding: 8px 12px 12px;
-  }
+  .sector-body { display: none; border-top: 1.5px solid var(--border); padding: 8px 12px 12px; }
   .sector.open .sector-body { display: block; }
 
-  /* ── ITEM ROW ── */
+  /* ── ITEMS ── */
   .item-list { list-style: none; }
-  .item {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    padding: 9px 4px;
-    border-bottom: 1px solid var(--border);
-  }
+  .item { display: flex; align-items: center; gap: 10px; padding: 9px 4px; border-bottom: 1px solid var(--border); }
   .item:last-child { border-bottom: none; }
-
-  .item.selected-mode-armar {
-    background-color: rgba(232, 93, 38, 0.06);
-    border-radius: 8px;
-    padding: 8px 6px;
-  }
-
-  .item-name {
-    flex: 1;
-    font-weight: 500;
-    font-size: 0.92rem;
-    line-height: 1.3;
-  }
-  .item.comprado .item-name {
-    text-decoration: line-through;
-    color: var(--muted);
-  }
-
-  .item-meta {
-    font-size: 0.75rem;
-    color: var(--muted);
-    margin-left: 6px;
-    font-weight: 600;
-  }
-
-  .item-check {
-    width: 24px;
-    height: 24px;
-    border: 2px solid var(--border);
-    border-radius: 7px;
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    background: #fff;
-    flex-shrink: 0;
-    font-weight: 800;
-    transition: all 0.15s;
-    user-select: none;
-  }
+  .item.selected-mode-armar { background-color: rgba(232, 93, 38, 0.06); border-radius: 8px; padding: 8px 6px; }
+  .item-name { flex: 1; font-weight: 500; font-size: 0.92rem; line-height: 1.3; }
+  .item.comprado .item-name { text-decoration: line-through; color: var(--muted); }
+  .item-meta { font-size: 0.75rem; color: var(--muted); margin-left: 6px; font-weight: 600; background: var(--bg); padding: 2px 6px; border-radius: 6px;}
+  
+  .item-check { width: 24px; height: 24px; border: 2px solid var(--border); border-radius: 7px; cursor: pointer; display: flex; align-items: center; justify-content: center; background: #fff; flex-shrink: 0; font-weight: 800; transition: all 0.15s; user-select: none; }
   .item-check.selected { background: var(--accent); border-color: var(--accent); color: #fff; }
   .item-check.comprado { background: var(--accent2); border-color: var(--accent2); color: #fff; }
 
-  /* ── STOCK CONTROLS ── */
-  .stock-controls {
-    display: flex;
-    align-items: center;
-    gap: 6px;
-    background: var(--bg);
-    padding: 3px 8px;
-    border-radius: 10px;
-  }
-  .stock-btn {
-    background: none;
-    border: none;
-    font-size: 1.15rem;
-    font-weight: 700;
-    cursor: pointer;
-    color: var(--accent);
-    width: 24px;
-    height: 24px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    border-radius: 6px;
-  }
-  .stock-btn:hover { background: rgba(0,0,0,0.05); }
+  /* ── BOTONES DE ACCIÓN (EDITAR / STOCK) ── */
+  .stock-controls { display: flex; align-items: center; gap: 6px; background: var(--bg); padding: 3px 8px; border-radius: 10px; }
+  .stock-btn { background: none; border: none; font-size: 1.15rem; font-weight: 700; cursor: pointer; color: var(--accent); width: 24px; height: 24px; display: flex; align-items: center; justify-content: center; border-radius: 6px; }
   .stock-val { font-weight: 700; font-size: 0.9rem; min-width: 22px; text-align: center; }
-
-  /* ── INPUTS / BOTONES ── */
-  .add-row { display: flex; gap: 8px; margin-top: 10px; }
-  .add-input {
-    flex: 1; padding: 8px 12px; border: 1.5px solid var(--border); border-radius: 10px;
-    font-family: 'DM Sans', sans-serif; font-size: 0.88rem; outline: none; background: var(--bg);
-  }
-  .add-input:focus { border-color: var(--accent); }
   
-  .add-btn {
-    background: var(--accent); color: #fff; border: none; border-radius: 10px;
-    padding: 8px 14px; font-family: 'Syne', sans-serif; font-weight: 700; font-size: 0.85rem; cursor: pointer;
-  }
-  .add-btn:hover { background: var(--accent-hover); }
+  .btn-icon-small { background: none; border: none; color: #aaa; cursor: pointer; font-size: 1rem; padding: 6px; transition: color 0.2s; border-radius: 8px;}
+  .btn-icon-small:hover { color: var(--accent); background: rgba(0,0,0,0.05);}
+  
+  .add-btn-large { width: 100%; background: rgba(232,93,38,0.1); border: 1.5px dashed var(--accent); color: var(--accent); padding: 12px; border-radius: 12px; font-family: 'Syne', sans-serif; font-weight: 700; cursor: pointer; margin-top: 10px; transition: background 0.2s;}
+  .add-btn-large:hover { background: rgba(232,93,38,0.15); }
 
-  .item-del {
-    background: none; border: none; color: #ccc; cursor: pointer; font-size: 0.95rem; padding: 4px;
-  }
-  .item-del:hover { color: var(--accent); }
-
-  /* ── MODALS TEMÁTICOS ── */
-  .modal-overlay {
-    position: fixed; inset: 0; background: rgba(26,26,26,0.7); backdrop-filter: blur(2px);
-    display: flex; align-items: flex-end; justify-content: center;
-    opacity: 0; pointer-events: none; transition: opacity 0.3s; z-index: 200;
-  }
+  /* ── MODALS ── */
+  .modal-overlay { position: fixed; inset: 0; background: rgba(26,26,26,0.7); backdrop-filter: blur(2px); display: flex; align-items: flex-end; justify-content: center; opacity: 0; pointer-events: none; transition: opacity 0.3s; z-index: 200; }
   .modal-overlay.open { opacity: 1; pointer-events: all; }
-  .modal {
-    background: var(--card); border-radius: 28px 28px 0 0; padding: 30px 24px 40px;
-    width: 100%; max-width: 680px; transform: translateY(100%); transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.1);
-    box-shadow: 0 -10px 40px rgba(0,0,0,0.2); position: relative;
-  }
+  .modal { background: var(--card); border-radius: 28px 28px 0 0; padding: 30px 24px 40px; width: 100%; max-width: 680px; transform: translateY(100%); transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.1); box-shadow: 0 -10px 40px rgba(0,0,0,0.2); position: relative; }
   .modal-overlay.open .modal { transform: translateY(0); }
-  
-  .modal-icon-top {
-    font-size: 3rem; position: absolute; top: -25px; left: 50%; transform: translateX(-50%);
-    background: var(--card); border-radius: 50%; padding: 5px;
-    box-shadow: 0 4px 10px rgba(0,0,0,0.1);
-  }
-
+  .modal-icon-top { font-size: 3rem; position: absolute; top: -25px; left: 50%; transform: translateX(-50%); background: var(--card); border-radius: 50%; padding: 5px; box-shadow: 0 4px 10px rgba(0,0,0,0.1); }
   .modal h2 { margin-top: 10px; margin-bottom: 8px; font-family: 'Syne', sans-serif; font-size: 1.3rem; text-align: center; }
   .modal p { color: var(--muted); margin-bottom: 22px; font-size: 0.95rem; line-height: 1.5; text-align: center; }
   .modal-actions { display: flex; gap: 12px; }
   
-  .modal-input {
-    width: 100%; padding: 15px; font-size: 1.4rem; font-weight: 700; text-align: center;
-    border: 2px solid var(--border); border-radius: 14px; margin-bottom: 22px; outline: none; background: var(--bg);
-  }
-  .modal-input:focus { border-color: var(--accent); }
+  .modal-input, .modal-select { width: 100%; padding: 15px; font-size: 1.1rem; font-family: 'DM Sans'; border: 2px solid var(--border); border-radius: 14px; margin-bottom: 16px; outline: none; background: var(--bg); color: var(--ink);}
+  .modal-input:focus, .modal-select:focus { border-color: var(--accent); }
+  .modal-input.center { text-align: center; font-size: 1.4rem; font-weight: 700; }
 
-  .btn {
-    flex: 1; padding: 14px; border-radius: 14px; border: none;
-    font-family: 'Syne', sans-serif; font-weight: 800; font-size: 0.95rem; cursor: pointer; transition: transform 0.1s;
-  }
+  .btn { flex: 1; padding: 14px; border-radius: 14px; border: none; font-family: 'Syne', sans-serif; font-weight: 800; font-size: 0.95rem; cursor: pointer; transition: transform 0.1s; }
   .btn:active { transform: scale(0.97); }
   .btn.confirm { background: var(--accent); color: #fff; box-shadow: 0 4px 12px rgba(232,93,38,0.3); }
   .btn.confirm-alt { background: var(--accent2); color: #fff; box-shadow: 0 4px 12px rgba(45,106,79,0.3); }
@@ -393,24 +135,16 @@
   .btn.secondary { background: var(--bg); color: var(--ink); border: 1.5px solid var(--border); }
 
   /* ── TOAST ── */
-  .toast {
-    position: fixed; top: 130px; left: 50%; transform: translateX(-50%) translateY(-10px);
-    background: var(--ink); color: #fff; padding: 10px 20px; border-radius: 99px;
-    font-size: 0.85rem; font-weight: 600; opacity: 0; pointer-events: none; transition: all 0.3s; z-index: 300;
-    box-shadow: 0 4px 15px rgba(0,0,0,0.2); display: flex; align-items: center; gap: 8px;
-  }
+  .toast { position: fixed; top: 130px; left: 50%; transform: translateX(-50%) translateY(-10px); background: var(--ink); color: #fff; padding: 10px 20px; border-radius: 99px; font-size: 0.85rem; font-weight: 600; opacity: 0; pointer-events: none; transition: all 0.3s; z-index: 300; box-shadow: 0 4px 15px rgba(0,0,0,0.2); display: flex; align-items: center; gap: 8px; }
   .toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
 </style>
 </head>
 <body>
 
-<!-- PANTALLA DE CARGA -->
+<!-- LOADER -->
 <div id="loader-overlay">
   <div class="loader-title">Cargando <span>SúperApp</span>...</div>
-  <div class="checkout-lane">
-    <div class="cart-icon">🛒</div>
-    <div class="cashier-icon">🏪</div>
-  </div>
+  <div class="checkout-lane"><div class="cart-icon">🛒</div><div class="cashier-icon">🏪</div></div>
   <div class="loader-text">Acomodando góndolas...</div>
 </div>
 
@@ -429,6 +163,8 @@
   </div>
 </header>
 
+<div id="controls-area"></div>
+
 <div class="progress-bar">
   <div class="progress-track"><div class="progress-fill" id="progressFill" style="width:0%"></div></div>
   <div class="progress-label" id="progressLabel">Sincronizando...</div>
@@ -436,13 +172,35 @@
 
 <main id="app-content"></main>
 
-<!-- MODAL: CANTIDAD (ALMACÉN) -->
+<!-- MODAL: GESTIÓN DE PRODUCTO (EDITAR / NUEVO) -->
+<div class="modal-overlay" id="modal-edit">
+  <div class="modal">
+    <div class="modal-icon-top">🏷️</div>
+    <h2 id="me-title">Editar Producto</h2>
+    <input type="hidden" id="me-id">
+    
+    <label style="font-size: 0.8rem; font-weight: 700; color: var(--muted); margin-bottom: 4px; display:block;">Nombre del producto</label>
+    <input type="text" id="me-nombre" class="modal-input" placeholder="Ej: Jabón de tocador">
+    
+    <label style="font-size: 0.8rem; font-weight: 700; color: var(--muted); margin-bottom: 4px; display:block;">Categoría</label>
+    <select id="me-categoria" class="modal-select" onchange="verificarCategoriaNueva()"></select>
+    
+    <input type="text" id="me-nueva-cat" class="modal-input" placeholder="Nombre de la nueva categoría..." style="display:none; margin-top: -8px;">
+    
+    <div class="modal-actions">
+      <button class="btn secondary" onclick="closeModals()">Cancelar</button>
+      <button class="btn confirm" onclick="guardarEdicionProducto()">Guardar</button>
+    </div>
+  </div>
+</div>
+
+<!-- OTROS MODALES... (Cantidad, Trackeo, Alerta) -->
 <div class="modal-overlay" id="modal-qty">
   <div class="modal">
     <div class="modal-icon-top">📦</div>
     <h2 id="mq-title">¿Cuántas unidades llevás?</h2>
-    <p>Se sumarán automáticamente al stock de tu Almacén en casa al tildarlo.</p>
-    <input type="number" id="mq-input" class="modal-input" value="1" min="1">
+    <p>Se sumarán automáticamente a tu stock en casa.</p>
+    <input type="number" id="mq-input" class="modal-input center" value="1" min="1">
     <div class="modal-actions">
       <button class="btn secondary" onclick="closeModals()">Cancelar</button>
       <button class="btn confirm" onclick="confirmarCantidadComprada()">✓ Al Changuito</button>
@@ -450,12 +208,11 @@
   </div>
 </div>
 
-<!-- MODAL: PREGUNTAR TRACKEO -->
 <div class="modal-overlay" id="modal-ask">
   <div class="modal">
     <div class="modal-icon-top">🤔</div>
     <h2 id="ma-title">¿Guardar en el Almacén?</h2>
-    <p id="ma-desc">Este producto no forma parte de tu inventario en casa. ¿Querés registrarlo para controlar su stock a partir de ahora?</p>
+    <p id="ma-desc">Este producto no está en tu inventario de casa. ¿Querés registrarlo para controlar su stock?</p>
     <div class="modal-actions">
       <button class="btn secondary" onclick="comprarSinAlmacen()">No, solo tildar</button>
       <button class="btn confirm-alt" onclick="aceptarTrackeoAlmacen()">Sí, agregarlo</button>
@@ -463,7 +220,6 @@
   </div>
 </div>
 
-<!-- MODAL: CONFIRMACIONES GENÉRICAS (BORRAR / VACIAR) -->
 <div class="modal-overlay" id="modal-alert">
   <div class="modal">
     <div class="modal-icon-top" id="alert-icon">⚠️</div>
@@ -476,17 +232,11 @@
   </div>
 </div>
 
-<div class="toast" id="toast">
-  <span id="toast-icon">✨</span>
-  <span id="toast-text">Mensaje</span>
-</div>
+<div class="toast" id="toast"><span id="toast-icon">✨</span><span id="toast-text">Mensaje</span></div>
 
 <script type="module">
   import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-app.js";
-  import { 
-    getFirestore, collection, onSnapshot, doc, 
-    addDoc, updateDoc, deleteDoc, writeBatch 
-  } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-firestore.js";
+  import { getFirestore, collection, onSnapshot, doc, addDoc, updateDoc, deleteDoc, writeBatch } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-firestore.js";
 
   const firebaseConfig = {
     apiKey: "AIzaSyAuMOFf5jvdfU2Rz38sLXWI_pd20iYajIs",
@@ -501,314 +251,387 @@
   const db = getFirestore(app);
   const productosCol = collection(db, "productos");
 
-  const SECTORES_META = [
+  // SECTORES BASE ACTUALIZADOS
+  const SECTORES_BASE = [
     { id: 'almacen', emoji: '🫙', name: 'Almacén / Despensa' },
+    { id: 'limpieza', emoji: '🧹', name: 'Artículos de Limpieza' },
+    { id: 'higiene', emoji: '🧴', name: 'Higiene Personal' },
+    { id: 'bano', emoji: '🛀', name: 'Baño' },
+    { id: 'bebidas', emoji: '🥤', name: 'Bebidas' },
     { id: 'lacteos', emoji: '🧀', name: 'Lácteos y Frescos' },
     { id: 'carnes', emoji: '🥩', name: 'Carnes y Congelados' },
     { id: 'frutas', emoji: '🥦', name: 'Frutas y Verduras' },
-    { id: 'limpieza', emoji: '🧹', name: 'Artículos de Limpieza' },
-    { id: 'higiene', emoji: '🧴', name: 'Higiene Personal' },
-    { id: 'bebidas', emoji: '🥤', name: 'Bebidas' },
     { id: 'extras', emoji: '🐾', name: 'Mascotas / Extras' }
   ];
 
-  let openSectors = { almacen: true };
+  window.vistaAlmacen = 'categorias'; // 'categorias' o 'alfabetica'
+  window.almSearchTerm = '';
+  
+  let openSectors = { almacen: true, sin_stock: true };
   let productos = [];
+  let categoriasDinamicas = [];
   let currentMode = 'armar';
   let currentPendingItem = null;
   let isFirstLoad = true;
 
-  // Escucha de Firebase en tiempo real
   onSnapshot(productosCol, (snapshot) => {
     productos = snapshot.docs.map(d => ({ id: d.id, ...d.data() }));
-    
-    // Ocultar Loader luego de la primera carga exitosa
+    extraerCategoriasDinamicas();
     if(isFirstLoad) {
-      setTimeout(() => {
-        document.getElementById('loader-overlay').classList.add('hidden');
-      }, 1000); // Pequeño delay para que se aprecie la animación
+      setTimeout(() => { document.getElementById('loader-overlay').classList.add('hidden'); }, 1000);
       isFirstLoad = false;
     }
-    
     render();
   });
+
+  function extraerCategoriasDinamicas() {
+    // Une los sectores base con cualquier categoría nueva creada por los usuarios
+    let map = new Map();
+    SECTORES_BASE.forEach(s => map.set(s.id, s));
+    productos.forEach(p => {
+      if (p.categoriaId && !map.has(p.categoriaId)) {
+        map.set(p.categoriaId, { id: p.categoriaId, name: p.categoriaNombre || p.categoriaId, emoji: p.emoji || '📦' });
+      }
+    });
+    categoriasDinamicas = Array.from(map.values());
+  }
 
   window.setMode = (mode) => {
     currentMode = mode;
     document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
     document.getElementById(`tab-${mode}`).classList.add('active');
+    renderControlesExtras();
     render();
   };
+
+  function renderControlesExtras() {
+    const ctr = document.getElementById('controls-area');
+    if (currentMode === 'almacen') {
+      ctr.innerHTML = `
+        <div class="controls-flex">
+          <input type="text" class="search-input" placeholder="🔍 Buscar en almacén..." value="${window.almSearchTerm}" oninput="window.updateSearch(this.value)">
+          <button class="view-btn ${window.vistaAlmacen === 'categorias' ? 'active' : ''}" onclick="window.cambiarVista('categorias')" title="Ver por Categorías">🗂️</button>
+          <button class="view-btn ${window.vistaAlmacen === 'alfabetica' ? 'active' : ''}" onclick="window.cambiarVista('alfabetica')" title="Ver Alfabético">🔤</button>
+        </div>
+      `;
+    } else {
+      ctr.innerHTML = '';
+    }
+  }
+
+  window.updateSearch = (val) => { window.almSearchTerm = val; render(); };
+  window.cambiarVista = (vista) => { window.vistaAlmacen = vista; renderControlesExtras(); render(); };
 
   function render() {
     const contenedor = document.getElementById('app-content');
     contenedor.innerHTML = '';
 
-    const grupos = {};
-    SECTORES_META.forEach(s => { grupos[s.id] = []; });
-    productos.forEach(p => {
-      const cat = p.categoriaId || 'extras';
-      if (!grupos[cat]) grupos[cat] = [];
-      grupos[cat].push(p);
-    });
-
-    if (currentMode === 'almacen') renderAlmacen(contenedor, grupos);
-    if (currentMode === 'armar') renderArmar(contenedor, grupos);
-    if (currentMode === 'comprar') renderComprar(contenedor, grupos);
+    if (currentMode === 'almacen') renderAlmacen(contenedor);
+    if (currentMode === 'armar') renderArmar(contenedor);
+    if (currentMode === 'comprar') renderComprar(contenedor);
 
     updateProgress();
   }
 
-  function renderAlmacen(container, grupos) {
-    SECTORES_META.forEach(sec => {
-      const items = (grupos[sec.id] || []).filter(p => p.en_almacen).sort((a,b) => a.nombre.localeCompare(b.nombre));
-      if (items.length === 0) return;
+  // ==========================================
+  // VISTA 1: ALMACÉN (Stock y Búsqueda)
+  // ==========================================
+  function renderAlmacen(container) {
+    let itemsAlm = productos.filter(p => p.en_almacen);
+    if (window.almSearchTerm) {
+      itemsAlm = itemsAlm.filter(p => p.nombre.toLowerCase().includes(window.almSearchTerm.toLowerCase()));
+    }
 
-      const isOpen = openSectors[sec.id] ?? false;
-      const card = document.createElement('div');
-      card.className = `sector ${isOpen ? 'open' : ''}`;
-      
-      card.innerHTML = `
-        <div class="sector-header" onclick="window.toggleSector('${sec.id}')">
-          <div class="sector-emoji">${sec.emoji}</div>
-          <div class="sector-title">${sec.name}</div>
-          <div class="sector-count">${items.length} con stock</div>
-          <div class="sector-chevron">▼</div>
-        </div>
-        <div class="sector-body">
-          <ul class="item-list" id="list-alm-${sec.id}"></ul>
+    // Separar Sin Stock
+    const sinStock = itemsAlm.filter(p => !p.stock || p.stock <= 0).sort((a,b) => a.nombre.localeCompare(b.nombre));
+    const conStock = itemsAlm.filter(p => p.stock > 0).sort((a,b) => a.nombre.localeCompare(b.nombre));
+
+    // Botón Agregar Global
+    container.innerHTML += `<button class="add-btn-large" onclick="window.abrirModalEdicion(null, true)">+ Añadir Producto al Almacén</button><br><br>`;
+
+    // Renderizar Sector SIN STOCK (Si hay)
+    if (sinStock.length > 0) {
+      const isOpen = openSectors['sin_stock'] ?? true;
+      const html = `
+        <div class="sector ${isOpen ? 'open' : ''}" style="border-color: #e63946;">
+          <div class="sector-header" onclick="window.toggleSector('sin_stock')">
+            <div class="sector-emoji">🚨</div>
+            <div class="sector-title" style="color:#e63946;">Sin Stock</div>
+            <div class="sector-count danger">${sinStock.length} items</div>
+            <div class="sector-chevron">▼</div>
+          </div>
+          <div class="sector-body">
+            <ul class="item-list">
+              ${sinStock.map(item => `
+                <li class="item">
+                  <span class="item-name">${item.nombre} <span class="item-meta">${item.categoriaNombre}</span></span>
+                  <div class="stock-controls">
+                    <button class="stock-btn" onclick="window.modificarStock('${item.id}', -1)">-</button>
+                    <span class="stock-val">${item.stock || 0}</span>
+                    <button class="stock-btn" onclick="window.modificarStock('${item.id}', 1)">+</button>
+                  </div>
+                  <button class="btn-icon-small" onclick="window.abrirModalEdicion('${item.id}')">✏️</button>
+                </li>
+              `).join('')}
+            </ul>
+          </div>
         </div>
       `;
-      container.appendChild(card);
-      const ul = card.querySelector(`#list-alm-${sec.id}`);
-      items.forEach(item => {
-        const li = document.createElement('li');
-        li.className = 'item';
-        li.innerHTML = `
-          <span class="item-name">${item.nombre}</span>
-          <div class="stock-controls">
-            <button class="stock-btn" onclick="window.modificarStock('${item.id}', -1)">-</button>
-            <span class="stock-val">${item.stock || 0}</span>
-            <button class="stock-btn" onclick="window.modificarStock('${item.id}', 1)">+</button>
+      container.innerHTML += html;
+    }
+
+    if (conStock.length === 0 && sinStock.length === 0) {
+      container.innerHTML += `<p style="text-align:center; color:var(--muted); padding:20px;">No se encontraron productos.</p>`;
+      return;
+    }
+
+    // Renderizar CON STOCK
+    if (window.vistaAlmacen === 'alfabetica') {
+      const html = `
+        <div class="sector open">
+          <div class="sector-header"><div class="sector-emoji">🔤</div><div class="sector-title">Todos (Alfabético)</div></div>
+          <div class="sector-body" style="display:block;">
+            <ul class="item-list">
+              ${conStock.map(item => `
+                <li class="item">
+                  <span class="item-name">${item.nombre} <span class="item-meta">${item.categoriaNombre}</span></span>
+                  <div class="stock-controls">
+                    <button class="stock-btn" onclick="window.modificarStock('${item.id}', -1)">-</button>
+                    <span class="stock-val">${item.stock}</span>
+                    <button class="stock-btn" onclick="window.modificarStock('${item.id}', 1)">+</button>
+                  </div>
+                  <button class="btn-icon-small" onclick="window.abrirModalEdicion('${item.id}')">✏️</button>
+                </li>
+              `).join('')}
+            </ul>
           </div>
-          <button class="item-del" onclick="window.quitarDeAlmacen('${item.id}')" title="No controlar stock">✕</button>
+        </div>
+      `;
+      container.innerHTML += html;
+    } else {
+      // Vista Categorías
+      categoriasDinamicas.forEach(sec => {
+        const items = conStock.filter(p => (p.categoriaId || 'extras') === sec.id);
+        if (items.length === 0) return;
+        const isOpen = openSectors[sec.id] ?? true;
+        const html = `
+          <div class="sector ${isOpen ? 'open' : ''}">
+            <div class="sector-header" onclick="window.toggleSector('${sec.id}')">
+              <div class="sector-emoji">${sec.emoji}</div>
+              <div class="sector-title">${sec.name}</div>
+              <div class="sector-count">${items.length}</div>
+              <div class="sector-chevron">▼</div>
+            </div>
+            <div class="sector-body">
+              <ul class="item-list">
+                ${items.map(item => `
+                  <li class="item">
+                    <span class="item-name">${item.nombre}</span>
+                    <div class="stock-controls">
+                      <button class="stock-btn" onclick="window.modificarStock('${item.id}', -1)">-</button>
+                      <span class="stock-val">${item.stock}</span>
+                      <button class="stock-btn" onclick="window.modificarStock('${item.id}', 1)">+</button>
+                    </div>
+                    <button class="btn-icon-small" onclick="window.abrirModalEdicion('${item.id}')">✏️</button>
+                  </li>
+                `).join('')}
+              </ul>
+            </div>
+          </div>
         `;
-        ul.appendChild(li);
+        container.innerHTML += html;
       });
-    });
+    }
   }
 
-  function renderArmar(container, grupos) {
-    SECTORES_META.forEach(sec => {
-      const items = (grupos[sec.id] || []).sort((a,b) => a.nombre.localeCompare(b.nombre));
+  // ==========================================
+  // VISTA 2: ARMAR LISTA
+  // ==========================================
+  function renderArmar(container) {
+    container.innerHTML += `<button class="add-btn-large" onclick="window.abrirModalEdicion(null, false)">+ Crear Producto Nuevo</button><br><br>`;
+    
+    categoriasDinamicas.forEach(sec => {
+      const items = productos.filter(p => (p.categoriaId || 'extras') === sec.id).sort((a,b) => a.nombre.localeCompare(b.nombre));
+      if (items.length === 0) return;
       const seleccionados = items.filter(p => p.en_lista).length;
       const isOpen = openSectors[sec.id] ?? false;
-      const card = document.createElement('div');
-      card.className = `sector ${isOpen ? 'open' : ''}`;
 
-      card.innerHTML = `
-        <div class="sector-header" onclick="window.toggleSector('${sec.id}')">
-          <div class="sector-emoji">${sec.emoji}</div>
-          <div class="sector-title">${sec.name}</div>
-          <div class="sector-count ${seleccionados > 0 ? 'has-items' : ''}">${seleccionados}/${items.length}</div>
-          <div class="sector-chevron">▼</div>
-        </div>
-        <div class="sector-body">
-          <ul class="item-list" id="list-armar-${sec.id}"></ul>
-          <div class="add-row">
-            <input class="add-input" id="input-${sec.id}" placeholder="Agregar a ${sec.name}..." onkeydown="if(event.key==='Enter') window.agregarNuevoProducto('${sec.id}')">
-            <button class="add-btn" onclick="window.agregarNuevoProducto('${sec.id}')">+</button>
+      const html = `
+        <div class="sector ${isOpen ? 'open' : ''}">
+          <div class="sector-header" onclick="window.toggleSector('${sec.id}')">
+            <div class="sector-emoji">${sec.emoji}</div>
+            <div class="sector-title">${sec.name}</div>
+            <div class="sector-count ${seleccionados > 0 ? 'has-items' : ''}">${seleccionados}/${items.length}</div>
+            <div class="sector-chevron">▼</div>
+          </div>
+          <div class="sector-body">
+            <ul class="item-list">
+              ${items.map(item => {
+                const isSel = !!item.en_lista;
+                return `
+                <li class="item ${isSel ? 'selected-mode-armar' : ''}">
+                  <div class="item-check ${isSel ? 'selected' : ''}" onclick="window.toggleLista('${item.id}', ${isSel})">${isSel ? '+' : ''}</div>
+                  <span class="item-name" onclick="window.toggleLista('${item.id}',${isSel})" style="cursor:pointer;">
+                    ${item.nombre}${item.en_almacen ? `<span class="item-meta">(Stock: ${item.stock || 0})</span>` : ''}
+                  </span>
+                  <button class="btn-icon-small" onclick="window.abrirModalEdicion('${item.id}')">✏️</button>
+                </li>
+              `}).join('')}
+            </ul>
           </div>
         </div>
       `;
-      container.appendChild(card);
-      const ul = card.querySelector(`#list-armar-${sec.id}`);
-      items.forEach(item => {
-        const isSel = !!item.en_lista;
-        const li = document.createElement('li');
-        li.className = `item ${isSel ? 'selected-mode-armar' : ''}`;
-        li.innerHTML = `
-          <div class="item-check ${isSel ? 'selected' : ''}" onclick="window.toggleLista('${item.id}', ${isSel})">
-            ${isSel ? '+' : ''}
-          </div>
-          <span class="item-name" onclick="window.toggleLista('${item.id}', ${isSel})" style="cursor:pointer;">
-            ${item.nombre}
-            ${item.en_almacen ? `<span class="item-meta">(Stock: ${item.stock || 0})</span>` : ''}
-          </span>
-          <button class="item-del" onclick="window.pedirEliminarProducto('${item.id}', '${item.nombre}')" title="Borrar de la base">✕</button>
-        `;
-        ul.appendChild(li);
-      });
+      container.innerHTML += html;
     });
   }
 
-  function renderComprar(container, grupos) {
+  // ==========================================
+  // VISTA 3: DE COMPRAS
+  // ==========================================
+  function renderComprar(container) {
     let hayItems = false;
-    SECTORES_META.forEach(sec => {
-      const items = (grupos[sec.id] || []).filter(p => p.en_lista).sort((a,b) => a.nombre.localeCompare(b.nombre));
+    categoriasDinamicas.forEach(sec => {
+      const items = productos.filter(p => (p.categoriaId || 'extras') === sec.id && p.en_lista).sort((a,b) => a.nombre.localeCompare(b.nombre));
       if (items.length === 0) return;
       hayItems = true;
 
       const comprados = items.filter(p => p.comprado).length;
       const isOpen = openSectors[sec.id] ?? true;
-      const card = document.createElement('div');
-      card.className = `sector ${isOpen ? 'open' : ''}`;
-
-      card.innerHTML = `
-        <div class="sector-header" onclick="window.toggleSector('${sec.id}')">
-          <div class="sector-emoji">${sec.emoji}</div>
-          <div class="sector-title">${sec.name}</div>
-          <div class="sector-count ${comprados === items.length ? 'all-done' : ''}">${comprados}/${items.length}</div>
-          <div class="sector-chevron">▼</div>
-        </div>
-        <div class="sector-body">
-          <ul class="item-list" id="list-comp-${sec.id}"></ul>
+      const html = `
+        <div class="sector ${isOpen ? 'open' : ''}">
+          <div class="sector-header" onclick="window.toggleSector('${sec.id}')">
+            <div class="sector-emoji">${sec.emoji}</div>
+            <div class="sector-title">${sec.name}</div>
+            <div class="sector-count ${comprados === items.length ? 'all-done' : ''}">${comprados}/${items.length}</div>
+            <div class="sector-chevron">▼</div>
+          </div>
+          <div class="sector-body">
+            <ul class="item-list">
+              ${items.map(item => {
+                const isComp = !!item.comprado;
+                return `
+                <li class="item ${isComp ? 'comprado' : ''}">
+                  <div class="item-check ${isComp ? 'comprado' : ''}" onclick="window.handleCheckCompra('${item.id}')">${isComp ? '✓' : ''}</div>
+                  <span class="item-name" onclick="window.handleCheckCompra('${item.id}')" style="cursor:pointer;">
+                    ${item.nombre}${item.en_almacen ? `<span class="item-meta">[Almacén]</span>` : ''}
+                  </span>
+                </li>
+              `}).join('')}
+            </ul>
+          </div>
         </div>
       `;
-      container.appendChild(card);
-      const ul = card.querySelector(`#list-comp-${sec.id}`);
-      items.forEach(item => {
-        const isComp = !!item.comprado;
-        const li = document.createElement('li');
-        li.className = `item ${isComp ? 'comprado' : ''}`;
-        li.innerHTML = `
-          <div class="item-check ${isComp ? 'comprado' : ''}" onclick="window.handleCheckCompra('${item.id}')">
-            ${isComp ? '✓' : ''}
-          </div>
-          <span class="item-name" onclick="window.handleCheckCompra('${item.id}')" style="cursor:pointer;">
-            ${item.nombre}
-            ${item.en_almacen ? `<span class="item-meta">[Almacén]</span>` : ''}
-          </span>
-        `;
-        ul.appendChild(li);
-      });
+      container.innerHTML += html;
     });
 
     if (!hayItems) {
-      container.innerHTML = `
-        <div class="sector" style="text-align:center; padding: 50px 20px; color:var(--muted); background:transparent; border:none; box-shadow:none;">
-          <div style="font-size: 3.5rem; margin-bottom: 12px; filter: grayscale(1); opacity:0.5;">🛒</div>
-          <p style="font-size: 1.1rem; font-weight:500;">El changuito está vacío.</p>
-          <p style="font-size: 0.9rem; margin-top:5px;">Andá a <b>Armar Lista</b> para empezar.</p>
-        </div>
-      `;
+      container.innerHTML = `<div style="text-align:center; padding: 50px 20px; color:var(--muted);"><div style="font-size: 3.5rem; filter: grayscale(1); opacity:0.5;">🛒</div><p>El changuito está vacío.</p></div>`;
     }
   }
 
   function updateProgress() {
-    const fill = document.getElementById('progressFill');
-    const label = document.getElementById('progressLabel');
+    const fill = document.getElementById('progressFill'), label = document.getElementById('progressLabel');
     const totalLista = productos.filter(p => p.en_lista).length;
     const totalComprados = productos.filter(p => p.en_lista && p.comprado).length;
 
     if (currentMode === 'almacen') {
-      const almCount = productos.filter(p => p.en_almacen).length;
       fill.style.width = '100%'; fill.style.backgroundColor = 'var(--ink)';
-      label.textContent = `${almCount} producto(s) en seguimiento de almacén`;
+      label.textContent = `${productos.filter(p => p.en_almacen).length} producto(s) en almacén`;
     } else if (currentMode === 'armar') {
       fill.style.width = '100%'; fill.style.backgroundColor = 'var(--accent)';
-      label.textContent = `${totalLista} producto(s) seleccionados para comprar`;
+      label.textContent = `${totalLista} producto(s) en la lista`;
     } else {
       const pct = totalLista ? Math.round((totalComprados / totalLista) * 100) : 0;
       fill.style.width = pct + '%'; fill.style.backgroundColor = 'var(--accent2)';
-      label.textContent = totalLista === 0 
-        ? 'No hay productos en la lista' 
-        : (pct === 100 ? '¡Changuito completo! 🎉' : `${totalComprados} de ${totalLista} comprados (${pct}%)`);
+      label.textContent = totalLista === 0 ? 'No hay productos' : (pct === 100 ? '¡Changuito completo! 🎉' : `${totalComprados} de ${totalLista} comprados`);
     }
   }
 
-  window.toggleSector = (id) => { openSectors[id] = !openSectors[id]; render(); };
-  window.toggleExpandAll = () => {
-    const todosAbiertos = SECTORES_META.every(s => openSectors[s.id]);
-    SECTORES_META.forEach(s => { openSectors[s.id] = !todosAbiertos; });
-    render();
+  // ==========================================
+  // GESTIÓN DE PRODUCTOS (MODAL EDICIÓN)
+  // ==========================================
+  window.abrirModalEdicion = (id = null, forzarAlmacen = false) => {
+    document.getElementById('me-id').value = id || (forzarAlmacen ? 'NEW_ALM' : 'NEW_LISTA');
+    document.getElementById('me-title').innerText = id ? 'Editar Producto' : 'Nuevo Producto';
+    
+    // Cargar options del select
+    const select = document.getElementById('me-categoria');
+    select.innerHTML = categoriasDinamicas.map(c => `<option value="${c.id}">${c.emoji} ${c.name}</option>`).join('');
+    select.innerHTML += `<option value="NEW_CAT">➕ Crear nueva categoría...</option>`;
+    
+    document.getElementById('me-nueva-cat').style.display = 'none';
+
+    if (id) {
+      const p = productos.find(x => x.id === id);
+      document.getElementById('me-nombre').value = p.nombre;
+      select.value = p.categoriaId || 'extras';
+    } else {
+      document.getElementById('me-nombre').value = '';
+      select.value = 'almacen'; // default
+    }
+    document.getElementById('modal-edit').classList.add('open');
   };
 
-  // BASE DE DATOS
-  window.agregarNuevoProducto = async (catId) => {
-    const inp = document.getElementById(`input-${catId}`);
-    const nombre = inp.value.trim();
-    if (!nombre) return;
-    const sec = SECTORES_META.find(s => s.id === catId);
-    await addDoc(productosCol, {
-      nombre, categoriaId: catId, categoriaNombre: sec.name, emoji: sec.emoji,
-      en_almacen: ['almacen', 'limpieza', 'higiene'].includes(catId),
-      stock: 0, en_lista: true, comprado: false
-    });
-    inp.value = '';
-    showToast(`"${nombre}" agregado`, '✨');
+  window.verificarCategoriaNueva = () => {
+    const sel = document.getElementById('me-categoria');
+    document.getElementById('me-nueva-cat').style.display = sel.value === 'NEW_CAT' ? 'block' : 'none';
   };
 
+  window.guardarEdicionProducto = async () => {
+    const id = document.getElementById('me-id').value;
+    const nombre = document.getElementById('me-nombre').value.trim();
+    if(!nombre) return showToast("Escribí un nombre", '⚠️');
+
+    let catId = document.getElementById('me-categoria').value;
+    let catName = "", emoji = "📦";
+
+    if (catId === 'NEW_CAT') {
+      catName = document.getElementById('me-nueva-cat').value.trim();
+      if(!catName) return showToast("Ingresá el nombre de la categoría", '⚠️');
+      catId = catName.toLowerCase().replace(/[^a-z0-9]/g, '_');
+    } else {
+      const c = categoriasDinamicas.find(x => x.id === catId);
+      catName = c.name; emoji = c.emoji;
+    }
+
+    const data = { nombre, categoriaId: catId, categoriaNombre: catName, emoji };
+
+    if (id && id !== 'NEW_ALM' && id !== 'NEW_LISTA') {
+      // Editar
+      await updateDoc(doc(db, "productos", id), data);
+      showToast("Producto actualizado", '📝');
+    } else {
+      // Crear Nuevo
+      data.stock = 0;
+      data.comprado = false;
+      if (id === 'NEW_ALM') {
+        data.en_almacen = true; data.en_lista = false;
+      } else {
+        data.en_almacen = false; data.en_lista = true;
+      }
+      await addDoc(productosCol, data);
+      showToast("Producto creado", '✨');
+    }
+    closeModals();
+  };
+
+  // OPERACIONES RÁPIDAS Y MODALES
   window.modificarStock = async (id, delta) => {
     const item = productos.find(p => p.id === id);
     const nuevo = Math.max(0, (item.stock || 0) + delta);
     await updateDoc(doc(db, "productos", id), { stock: nuevo });
   };
+  window.toggleLista = async (id, estadoActual) => { await updateDoc(doc(db, "productos", id), { en_lista: !estadoActual, comprado: false }); };
+  window.toggleSector = (id) => { openSectors[id] = !openSectors[id]; render(); };
+  window.toggleExpandAll = () => { const t = categoriasDinamicas.every(s => openSectors[s.id]); categoriasDinamicas.forEach(s => openSectors[s.id] = !t); render(); };
+  
+  window.quitarDeAlmacen = async (id) => { await updateDoc(doc(db, "productos", id), { en_almacen: false }); showToast("Quitado del almacén", '📦'); };
 
-  window.quitarDeAlmacen = async (id) => {
-    await updateDoc(doc(db, "productos", id), { en_almacen: false });
-    showToast("Quitado del almacén", '📦');
-  };
-
-  window.toggleLista = async (id, estadoActual) => {
-    await updateDoc(doc(db, "productos", id), { en_lista: !estadoActual, comprado: false });
-  };
-
-  // MODALES PERSONALIZADOS DE ALERTA
-  function mostrarAlerta(icono, titulo, descripcion, textoBtn, accionConfirmar) {
-    document.getElementById('alert-icon').innerText = icono;
-    document.getElementById('alert-title').innerText = titulo;
-    document.getElementById('alert-desc').innerText = descripcion;
-    const btn = document.getElementById('alert-confirm-btn');
-    btn.innerText = textoBtn;
-    btn.onclick = () => { accionConfirmar(); closeModals(); };
-    document.getElementById('modal-alert').classList.add('open');
-  }
-
-  window.pedirEliminarProducto = (id, nombre) => {
-    mostrarAlerta('🗑️', '¿Eliminar producto?', 
-      `Estás por borrar "${nombre}" definitivamente de toda la aplicación.`, 
-      'Sí, eliminar', 
-      async () => {
-        await deleteDoc(doc(db, "productos", id));
-        showToast("Producto eliminado", '🗑️');
-      });
-  };
-
-  window.pedirVaciarCompra = () => {
-    const seleccionados = productos.filter(p => p.en_lista);
-    if (seleccionados.length === 0) {
-      showToast("La lista ya está vacía", '🛒'); return;
-    }
-    mostrarAlerta('🛒', '¡Atención en Góndola!', 
-      'Vas a desmarcar todos los productos de la lista actual para empezar una nueva compra.\nEl stock de tu casa no se modificará.', 
-      'Vaciar Lista', 
-      async () => {
-        const batch = writeBatch(db);
-        seleccionados.forEach(p => {
-          batch.update(doc(db, "productos", p.id), { en_lista: false, comprado: false });
-        });
-        await batch.commit();
-        setMode('armar');
-        showToast("Lista lista para la próxima", '🚀');
-      });
-  };
-
-  window.closeModals = () => {
-    document.querySelectorAll('.modal-overlay').forEach(m => m.classList.remove('open'));
-    currentPendingItem = null;
-  };
-
-  // FLUJO DE COMPRAS (CHECKOUT)
+  // CHECKOUT (COMPRAS)
   window.handleCheckCompra = async (id) => {
     const item = productos.find(p => p.id === id);
     currentPendingItem = item;
-
-    if (item.comprado) {
-      await updateDoc(doc(db, "productos", id), { comprado: false });
-      return;
-    }
-
+    if (item.comprado) { await updateDoc(doc(db, "productos", id), { comprado: false }); return; }
     if (item.en_almacen) {
       document.getElementById('mq-title').innerText = `¿Cuántas unid. de ${item.nombre}?`;
       document.getElementById('mq-input').value = 1;
@@ -818,42 +641,34 @@
       document.getElementById('modal-ask').classList.add('open');
     }
   };
-
-  window.comprarSinAlmacen = async () => {
-    if (!currentPendingItem) return;
-    await updateDoc(doc(db, "productos", currentPendingItem.id), { comprado: true });
-    closeModals();
-    showToast("Comprado", '✅');
-  };
-
-  window.aceptarTrackeoAlmacen = () => {
-    document.getElementById('modal-ask').classList.remove('open');
-    document.getElementById('mq-title').innerText = `¿Cuántas unid. de ${currentPendingItem.nombre}?`;
-    document.getElementById('mq-input').value = 1;
-    document.getElementById('modal-qty').classList.add('open');
-  };
-
+  window.comprarSinAlmacen = async () => { await updateDoc(doc(db, "productos", currentPendingItem.id), { comprado: true }); closeModals(); showToast("Comprado", '✅'); };
+  window.aceptarTrackeoAlmacen = () => { document.getElementById('modal-ask').classList.remove('open'); document.getElementById('mq-title').innerText = `¿Cuántas unid. de ${currentPendingItem.nombre}?`; document.getElementById('mq-input').value = 1; document.getElementById('modal-qty').classList.add('open'); };
   window.confirmarCantidadComprada = async () => {
-    if (!currentPendingItem) return;
     const qty = parseInt(document.getElementById('mq-input').value, 10) || 1;
-    const nuevoStock = (currentPendingItem.stock || 0) + qty;
-
-    await updateDoc(doc(db, "productos", currentPendingItem.id), {
-      comprado: true,
-      en_almacen: true,
-      stock: nuevoStock
-    });
-    closeModals();
-    showToast(`Stock actualizado en casa`, '🏠');
+    await updateDoc(doc(db, "productos", currentPendingItem.id), { comprado: true, en_almacen: true, stock: (currentPendingItem.stock || 0) + qty });
+    closeModals(); showToast(`Stock actualizado`, '🏠');
   };
 
-  function showToast(msg, icono = '✨') {
-    document.getElementById('toast-icon').innerText = icono;
-    document.getElementById('toast-text').innerText = msg;
-    const t = document.getElementById('toast');
-    t.classList.add('show');
-    setTimeout(() => t.classList.remove('show'), 2500);
+  // ALERTAS GENÉRICAS
+  function mostrarAlerta(icono, titulo, desc, btnText, action) {
+    document.getElementById('alert-icon').innerText = icono;
+    document.getElementById('alert-title').innerText = titulo;
+    document.getElementById('alert-desc').innerText = desc;
+    const btn = document.getElementById('alert-confirm-btn');
+    btn.innerText = btnText; btn.onclick = () => { action(); closeModals(); };
+    document.getElementById('modal-alert').classList.add('open');
   }
+  window.pedirVaciarCompra = () => {
+    const sel = productos.filter(p => p.en_lista);
+    if(sel.length===0) return showToast("La lista ya está vacía", '🛒');
+    mostrarAlerta('🛒', '¡Atención!', 'Vas a desmarcar todos los productos de la lista actual.\nEl stock no se modificará.', 'Vaciar Lista', async () => {
+      const batch = writeBatch(db); sel.forEach(p => batch.update(doc(db, "productos", p.id), { en_lista: false, comprado: false }));
+      await batch.commit(); setMode('armar'); showToast("Lista limpia", '🚀');
+    });
+  };
+
+  window.closeModals = () => { document.querySelectorAll('.modal-overlay').forEach(m => m.classList.remove('open')); currentPendingItem = null; };
+  function showToast(msg, icono = '✨') { document.getElementById('toast-icon').innerText = icono; document.getElementById('toast-text').innerText = msg; const t = document.getElementById('toast'); t.classList.add('show'); setTimeout(() => t.classList.remove('show'), 2500); }
 </script>
 </body>
 </html>

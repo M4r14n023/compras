@@ -2,7 +2,7 @@
 <html lang="es">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <title>Super App</title>
 <!-- Enlaces para el ícono y la instalación como App (PWA) -->
 <link rel="icon" type="image/jpeg" href="logo.jpeg">
@@ -34,6 +34,9 @@
     color: var(--ink);
     min-height: 100vh;
     padding-bottom: 120px;
+    -webkit-text-size-adjust: 100%;
+    text-size-adjust: 100%;
+    font-size: 16px;
   }
 
   /* ── LOADER CON LOGO ── */

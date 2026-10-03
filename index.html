@@ -95,7 +95,7 @@
   .progress-label { font-size: 0.75rem; color: rgba(255,255,255,0.7); margin-top: 5px; font-weight: 500; text-align: center; }
 
   /* ── MAIN & CARDS ── */
-  main { padding: 16px; max-width: 680px; margin: 0 auto; }
+  main { padding: 12px 8px 120px; max-width: 680px; margin: 0 auto; width: 100%; }
   .sector { background: var(--card); border-radius: var(--radius); margin-bottom: 12px; box-shadow: var(--shadow); overflow: hidden; border: 1.5px solid var(--border); }
   .sector-header { display: flex; align-items: center; gap: 10px; padding: 12px 14px; cursor: pointer; user-select: none; -webkit-tap-highlight-color: transparent; background: var(--card); }
   .sector-emoji { font-size: 1.25rem; width: 34px; height: 34px; display: flex; align-items: center; justify-content: center; background: var(--bg); border-radius: 10px; flex-shrink: 0; }
@@ -111,14 +111,14 @@
 
   /* ── ITEMS ── */
   .item-list { list-style: none; }
-  .item { display: flex; align-items: center; gap: 10px; padding: 9px 4px; border-bottom: 1px solid var(--border); }
+  .item { display: flex; align-items: center; gap: 12px; padding: 12px 6px; border-bottom: 1px solid var(--border); }
   .item:last-child { border-bottom: none; }
   .item.selected-mode-armar { background-color: rgba(232, 93, 38, 0.06); border-radius: 8px; padding: 8px 6px; }
-  .item-name { flex: 1; font-weight: 500; font-size: 0.92rem; line-height: 1.3; }
+  .item-name { flex: 1; font-weight: 500; font-size: 1.05rem; line-height: 1.3; }
   .item.comprado .item-name { text-decoration: line-through; color: var(--muted); }
   .item-meta { font-size: 0.75rem; color: var(--muted); margin-left: 6px; font-weight: 600; background: var(--bg); padding: 2px 6px; border-radius: 6px;}
   
-  .item-check { width: 24px; height: 24px; border: 2px solid var(--border); border-radius: 7px; cursor: pointer; display: flex; align-items: center; justify-content: center; background: #fff; flex-shrink: 0; font-weight: 800; transition: all 0.15s; user-select: none; }
+  .item-check { width: 28px; height: 28px; border: 2px solid var(--border); border-radius: 8px; cursor: pointer; display: flex; align-items: center; justify-content: center; background: #fff; flex-shrink: 0; font-weight: 800; font-size: 1.1rem; transition: all 0.15s; user-select: none; }
   .item-check.selected { background: var(--accent); border-color: var(--accent); color: #fff; }
   .item-check.comprado { background: var(--accent2); border-color: var(--accent2); color: #fff; }
 
